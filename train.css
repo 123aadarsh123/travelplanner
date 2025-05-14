@@ -3,7 +3,7 @@ body {
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
-  background: url("D:/tripplannerassitant/Images/hero-bg.jpg") center/cover
+  background: url("hero-bg.jpg") center/cover
     no-repeat;
   background-color: #f9f9f9;
 }
@@ -71,7 +71,7 @@ body {
 
 /* Hero Section */
 .hero {
-  background: url ("D:\tripplannerassitant\Images\hero-bg.jpg") center/cover
+  background: url ("hero-bg.jpg") center/cover
     no-repeat;
   padding: 4rem 2rem;
   color: black;
@@ -229,7 +229,7 @@ body {
 .offers {
   padding: 3rem 2rem;
   background-color: #f3f4f6;
-  background: url("D:/tripplannerassitant/Images/hero-bg.jpg") center/cover
+  background: url("hero-bg.jpg") center/cover
     no-repeat;
 }
 
