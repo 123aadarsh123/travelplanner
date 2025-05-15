@@ -22,29 +22,35 @@
             <img src="flight-icon.jpg" alt="Flights" class="tab-icon" />
             Flights
           </button>
-          <button class="tab" onclick="window.location.href='index.html#hotels'">
+          <button class="tab" onclick="window.location.href='hotel.html'">
             <img src="hotel-icon.jpg" alt="Hotels" class="tab-icon" />
             Hotels
           </button>
-          <button class="tab" onclick="window.location.href='index.html#trains'">
+          <button class="tab" onclick="window.location.href='train.html'">
             <img src="train-icon.png" alt="Trains" class="tab-icon" />
             Trains
           </button>
-          <button class="tab" onclick="window.location.href='index.html#buses'">
+          <button class="tab" onclick="window.location.href='bus.html'">
             <img src="bus-icon.jpg" alt="Buses" class="tab-icon" />
             Buses
           </button>
         </div>
       </nav>
     </div>
-    <div class="user-actions">
-      <button class="btn btn-primary" onclick="window.location.href='login.html'">
-        Login
-      </button>
-      <button class="btn btn-secondary" onclick="window.location.href='signup.html'">
-        Sign Up
-      </button>
-    </div>
+    <nav>
+      <div class="user-actions d-flex align-items-center" style="gap: 18px;">
+        <button class="btn btn-primary rounded-circle d-flex align-items-center justify-content-center"
+          id="dashboard-initial" style="width: 90px;height:90px;font-size:4rem;padding:5px;"
+          onclick="window.location.href='after-login.html'">
+          D
+        </button>
+        <button class="btn btn-danger rounded-circle d-flex align-items-center justify-content-center"
+          style="width: 90px; height: 90px;" onclick="logout()">
+          <img src="logout.jpg" alt="Logout"
+            style="width: 60px; height: 60px; object-fit: cover;">
+        </button>
+      </div>
+    </nav>
   </header>
   <!-- Contact Section -->
   <section class="hero">
