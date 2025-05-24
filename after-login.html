@@ -278,12 +278,31 @@
     </div>
 
     <script>
-        // Set max date for DOB input to today
         document.addEventListener('DOMContentLoaded', function () {
-            const today = new Date().toISOString().split('T')[0];
-            document.getElementById('edit-dob').setAttribute('max', today);
-        });
+  // Set max date for DOB input to today
+  const today = new Date().toISOString().split('T')[0];
+  document.getElementById('dob').setAttribute('max', today);
 
+  // Set custom validation message for mobile number
+  document.getElementById("mobile").addEventListener("input", function () {
+    const mobileInput = this;
+    const pattern = /^[0-9]{10}$/;
+    if (!pattern.test(mobileInput.value)) {
+      mobileInput.setCustomValidity("Please enter 10-digit mobile number");
+    } else {
+      mobileInput.setCustomValidity("");
+    }
+  });
+  document.getElementById("fullName").addEventListener("input", function () {
+  const nameInput = this;
+  const pattern = /^[A-Za-z\s]+$/;
+  if (!pattern.test(nameInput.value)) {
+    nameInput.setCustomValidity("Please enter alphabets only");
+  } else {
+    nameInput.setCustomValidity("");
+  }
+});
+});
         // Update avatar image preview
         function updateAvatar(event) {
             const file = event.target.files[0];
