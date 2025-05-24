@@ -52,3 +52,12 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   });
 });
+document.getElementById("fullName").addEventListener("input", function () {
+  const nameInput = this;
+  const pattern = /^[A-Za-z\s]+$/;
+  if (!pattern.test(nameInput.value)) {
+    nameInput.setCustomValidity("Please enter alphabets only");
+  } else {
+    nameInput.setCustomValidity("");
+  }
+});
