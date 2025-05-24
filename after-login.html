@@ -283,27 +283,7 @@
   const today = new Date().toISOString().split('T')[0];
   document.getElementById('dob').setAttribute('max', today);
 
-  // Set custom validation message for mobile number
-  document.getElementById("mobile").addEventListener("input", function () {
-    const mobileInput = this;
-    const pattern = /^[0-9]{10}$/;
-    if (!pattern.test(mobileInput.value)) {
-      mobileInput.setCustomValidity("Please enter 10-digit mobile number");
-    } else {
-      mobileInput.setCustomValidity("");
-    }
-  });
-  document.getElementById("fullName").addEventListener("input", function () {
-  const nameInput = this;
-  const pattern = /^[A-Za-z\s]+$/;
-  if (!pattern.test(nameInput.value)) {
-    nameInput.setCustomValidity("Please enter alphabets only");
-  } else {
-    nameInput.setCustomValidity("");
-  }
-});
-});
-        // Update avatar image preview
+            // Update avatar image preview
         function updateAvatar(event) {
             const file = event.target.files[0];
             if (file) {
@@ -347,49 +327,61 @@
             document.getElementById('edit-gender').value = sessionStorage.getItem('gender') || '';
         }
 
-        // Save Changes function
-        function saveChanges() {
-            const newName = document.getElementById('edit-name').value.trim();
-            const newDob = document.getElementById('edit-dob').value;
-            const newMobile = document.getElementById('edit-mobile').value.trim();
-            const newGender = document.getElementById('edit-gender').value;
+function saveChanges() {
+    const newName = document.getElementById('edit-name').value.trim();
+    const newDob = document.getElementById('edit-dob').value;
+    const newMobile = document.getElementById('edit-mobile').value.trim();
+    const newGender = document.getElementById('edit-gender').value;
 
-            // Validate DOB is not in the future
-            const today = new Date().toISOString().split('T')[0];
-            if (newDob > today) {
-                alert('Date of Birth cannot be in the future.');
-                return;
-            }
+    // Validate full name: only alphabets and spaces allowed
+    const namePattern = /^[A-Za-z\s]+$/;
+    if (!namePattern.test(newName)) {
+        alert('Full Name must contain only alphabets and spaces.');
+        return;
+    }
 
-            // Update the displayed values
-            document.getElementById('user-name').textContent = newName;
-            document.getElementById('dashboard-user-name').textContent = newName.split(' ')[0];
-            document.getElementById('user-dob').querySelector('span').textContent = newDob;
-            document.getElementById('user-mobile').querySelector('span').textContent = newMobile;
-            document.getElementById('user-gender').querySelector('span').textContent = newGender.charAt(0)
-                .toUpperCase() + newGender.slice(1);
+    // Validate mobile: exactly 10 digits
+    const mobilePattern = /^[0-9]{10}$/;
+    if (!mobilePattern.test(newMobile)) {
+        alert('Mobile Number must be a 10-digit number.');
+        return;
+    }
 
-            // Save to session storage and local storage
-            sessionStorage.setItem('fullName', newName);
-            localStorage.setItem('userFullName', newName);
-            sessionStorage.setItem('dob', newDob);
-            localStorage.setItem('userDob', newDob);
-            sessionStorage.setItem('mobile', newMobile);
-            localStorage.setItem('userMobile', newMobile);
-            sessionStorage.setItem('gender', newGender);
-            localStorage.setItem('userGender', newGender);
+    // Validate DOB is not in the future
+    const today = new Date().toISOString().split('T')[0];
+    if (newDob > today) {
+        alert('Date of Birth cannot be in the future.');
+        return;
+    }
 
-            // Hide edit fields and show updated details
-            document.getElementById('edit-fields').style.display = 'none';
-            document.getElementById('user-name').style.display = 'block';
-            document.getElementById('user-email').style.display = 'block';
-            document.getElementById('user-dob').style.display = 'block';
-            document.getElementById('user-mobile').style.display = 'block';
-            document.getElementById('user-gender').style.display = 'block';
+    // Update the displayed values
+    document.getElementById('user-name').textContent = newName;
+    document.getElementById('dashboard-user-name').textContent = newName.split(' ')[0];
+    document.getElementById('user-dob').querySelector('span').textContent = newDob;
+    document.getElementById('user-mobile').querySelector('span').textContent = newMobile;
+    document.getElementById('user-gender').querySelector('span').textContent = newGender.charAt(0)
+        .toUpperCase() + newGender.slice(1);
 
-            alert('Profile updated successfully!');
-        }
+    // Save to session storage and local storage
+    sessionStorage.setItem('fullName', newName);
+    localStorage.setItem('userFullName', newName);
+    sessionStorage.setItem('dob', newDob);
+    localStorage.setItem('userDob', newDob);
+    sessionStorage.setItem('mobile', newMobile);
+    localStorage.setItem('userMobile', newMobile);
+    sessionStorage.setItem('gender', newGender);
+    localStorage.setItem('userGender', newGender);
 
+    // Hide edit fields and show updated details
+    document.getElementById('edit-fields').style.display = 'none';
+    document.getElementById('user-name').style.display = 'block';
+    document.getElementById('user-email').style.display = 'block';
+    document.getElementById('user-dob').style.display = 'block';
+    document.getElementById('user-mobile').style.display = 'block';
+    document.getElementById('user-gender').style.display = 'block';
+
+    alert('Profile updated successfully!');
+}
         // Cancel Edit function
         function cancelEdit() {
             document.getElementById('edit-fields').style.display = 'none';
