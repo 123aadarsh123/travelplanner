@@ -49,7 +49,7 @@ const children = parseInt(urlParams.get("children"), 10) || 0;
 // Rest of the validation and logic
 if (!to || !from || !departure || !returnDate) {
   alert("Missing required trip details. Please go back and fill the form.");
-  window.location.href = "index.html";
+  window.location.href = "index1.html";
 }
 // Calculate trip duration (number of days)
 const startDate = new Date(departure);
@@ -1254,7 +1254,7 @@ if (tripDistance === undefined) {
       to
     )} is not available.`
   );
-  window.location.href = "index.html"; // Redirect to the main page
+  window.location.href = "index1.html"; // Redirect to the main page
 }
 document.getElementById(
   "destination-title"
