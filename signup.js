@@ -51,8 +51,7 @@ document.addEventListener('DOMContentLoaded', function () {
       mobileInput.setCustomValidity("");
     }
   });
-});
-document.getElementById("fullName").addEventListener("input", function () {
+  document.getElementById("fullName").addEventListener("input", function () {
   const nameInput = this;
   const pattern = /^[A-Za-z\s]+$/;
   if (!pattern.test(nameInput.value)) {
@@ -60,4 +59,6 @@ document.getElementById("fullName").addEventListener("input", function () {
   } else {
     nameInput.setCustomValidity("");
   }
+});
+
 });
