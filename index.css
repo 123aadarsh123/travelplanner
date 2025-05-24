@@ -21,6 +21,27 @@ body {
   z-index: 1000;
 }
 
+.logout-btn {
+  width: 60px;
+  height: 60px;
+  background-color: #2563eb; /* or any color you want */
+  border: none;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background 0.2s;
+}
+.logout-btn:hover {
+  background-color: #1d4ed8;
+}
+.logout-btn img {
+  width: 32px;
+  height: 32px;
+  object-fit: cover;
+}
+
 .navbar .logo {
   display: flex;
   align-items: center;
