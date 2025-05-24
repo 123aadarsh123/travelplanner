@@ -36,8 +36,19 @@ document
     window.location.href = "login.html"; // Redirect to the login page
   });
 
-// Set max date for DOB input to today
 document.addEventListener('DOMContentLoaded', function () {
+  // Set max date for DOB input to today
   const today = new Date().toISOString().split('T')[0];
   document.getElementById('dob').setAttribute('max', today);
+
+  // Set custom validation message for mobile number
+  document.getElementById("mobile").addEventListener("input", function () {
+    const mobileInput = this;
+    const pattern = /^[0-9]{10}$/;
+    if (!pattern.test(mobileInput.value)) {
+      mobileInput.setCustomValidity("Please enter 10-digit mobile number");
+    } else {
+      mobileInput.setCustomValidity("");
+    }
+  });
 });
