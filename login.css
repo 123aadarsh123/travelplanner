@@ -1,4 +1,9 @@
 background: linear-gradient(135deg, #74ebd5 0%, #ACB6E5 100%);
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
 body {
   font-family: Arial, sans-serif;
   margin: 0;
@@ -7,7 +12,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  min-height: 100vh;
   background: url("hero-bg.jpg") center/cover no-repeat;
 }
 
