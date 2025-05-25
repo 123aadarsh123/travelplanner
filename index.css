@@ -72,7 +72,7 @@ body {
 .user-actions {
   display: flex;
   align-items: center;
-  gap: 10px; /* dono buttons ke beech gap, zarurat ho toh kam ya zyada kar sakte hain */
+  gap: 10px; /* Adjust gap as per your need */
 }
 
 .user-actions .btn {
