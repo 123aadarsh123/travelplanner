@@ -20,6 +20,19 @@ body {
   top: 0;
   z-index: 1000;
 }
+.flight-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 16px;
+}
+.flight-table th, .flight-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+}
+.flight-table th {
+  background: #f4f4f4;
+}
 
 .logout-btn {
   width: 60px;
