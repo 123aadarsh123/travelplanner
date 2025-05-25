@@ -99,34 +99,55 @@ function formatINR(amount) {
   return '₹' + amount.toLocaleString('en-IN');
 }
 
-// Function to render flight results to the DOM
+// Function to render flight results similar to Booking.com style (see image 1)
 function showFlightResults(flights) {
   const resultsDiv = document.getElementById("flight-results");
   if (!flights || flights.length === 0) {
     resultsDiv.innerHTML = "<p>No flights found for your selection.</p>";
     return;
   }
-  let html = `<table class="flight-table">
-    <thead>
-      <tr>
-        <th>Airline</th>
-        <th>Flight No.</th>
-        <th>Departure Time</th>
-        <th>Fare</th>
-      </tr>
-    </thead>
-    <tbody>`;
+
+  let html = `<div class="bookingcom-style-results">`;
+
   flights.forEach(f => {
-    html += `<tr>
-      <td>${f.airline}</td>
-      <td>${f.number}</td>
-      <td>${f.departureTime}</td>
-      <td>${formatINR(f.fare)}</td>
-    </tr>`;
+    html += `
+      <div class="flight-card">
+        <div class="flight-card-main">
+          <div class="flight-airline-logo">
+            <img src="flight-icon.jpg" alt="${f.airline}" style="width:40px;height:40px;border-radius:8px;">
+          </div>
+          <div class="flight-times">
+            <div>
+              <strong>${f.departureTime}</strong> <span class="flight-airport-code">${f.from || "DEL"}</span> 
+              <span class="flight-date">${f.departureDate || ""}</span>
+            </div>
+            <div class="flight-duration">
+              <span class="direct-badge">Direct</span>
+              <span>2h 15m</span>
+            </div>
+            <div>
+              <strong>${f.arrivalTime || ""}</strong> <span class="flight-airport-code">${f.to || "BOM"}</span>
+              <span class="flight-date">${f.arrivalDate || ""}</span>
+            </div>
+          </div>
+          <div class="flight-details">
+            <div class="flight-airline-name">${f.airline}</div>
+            <div class="flight-number">${f.number}</div>
+          </div>
+          <div class="flight-fare-box">
+            <div class="flight-fare-label">Eco Value fare: personal item, carry-on bag, checked bag</div>
+            <div class="flight-fare-amount">${formatINR(f.fare)}</div>
+            <button class="btn btn-primary btn-details">View details</button>
+          </div>
+        </div>
+      </div>
+    `;
   });
-  html += '</tbody></table>';
+
+  html += `</div>`;
   resultsDiv.innerHTML = html;
 }
+
 
 document
   .getElementById("flightForm")
