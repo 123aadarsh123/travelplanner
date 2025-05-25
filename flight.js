@@ -182,8 +182,7 @@ document.getElementById("flightForm").addEventListener("submit", async function(
     alert("Origin and destination cannot be the same.");
     return;
   }
-
   // Fetch and show results
   const results = await getFlightResults({ from, to, departure, returnDate, adults, children, cabinClass, journeyType });
   showFlightResults(results);
-});
+}); // Yahi closing honi chahiye!
