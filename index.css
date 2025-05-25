@@ -69,6 +69,11 @@ body {
   color: white;
   font-weight: 600;
 }
+.user-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* dono buttons ke beech gap, zarurat ho toh kam ya zyada kar sakte hain */
+}
 
 .user-actions .btn {
   margin-left: 1rem;
