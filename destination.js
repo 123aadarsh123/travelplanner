@@ -1,9 +1,5 @@
 async function fetchFlightFare(origin, destination, departDate, returnDate) {
-  // Map city codes to IATA codes if required; here we assume user enters IATA codes (e.g., BOM, DEL)
-  // If not, add a lookup table to convert city names to IATA codes
-
   const url = `https://booking-com15.p.rapidapi.com/api/v1/flights/getMinPrice?fromId=${origin}.AIRPORT&toId=${destination}.AIRPORT&cabinClass=ECONOMY&currency_code=AED`;
-
   const options = {
     method: 'GET',
     headers: {
@@ -17,16 +13,20 @@ async function fetchFlightFare(origin, destination, departDate, returnDate) {
     if (!response.ok) {
       throw new Error(`Error fetching flight data: ${response.statusText}`);
     }
-
     const result = await response.json();
     console.log("API Flight Result:", result);
-    // You'll need to inspect the result format; adjust "minPrice" as per API response
-    if (result && result.data && result.data.minPrice) {
-      return result.data.minPrice;
-    } else {
-      console.warn("No flight price data available.");
-      return "No flight price data available.";
+
+    if (result && result.status === false) {
+      // Print and return the error message(s)
+      console.warn("API error:", result.message);
+      return `API error: ${Array.isArray(result.message) ? result.message.join(", ") : result.message}`;
     }
+
+    // If a valid price is returned in the expected structure, handle it here
+    // Example: if (result.data && result.data.minPrice) { return result.data.minPrice; }
+
+    console.warn("No flight price data available.");
+    return "No flight price data available.";
   } catch (error) {
     console.error(error);
     return "Error fetching flight data.";
