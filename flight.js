@@ -68,30 +68,42 @@ document.addEventListener("DOMContentLoaded", () => {
 // ...rest of your code above...
 
 // Example static flight data generator (You can replace this with real API or logic)
-function getFlightResults({ from, to, departure, adults, children, cabinClass }) {
-  // For demo: generate 3 random flights
-  const sampleFlights = [
-    {
-      airline: "IndiGo",
-      number: "6E-203",
-      departureTime: "09:00",
-      fare: 3200
-    },
-    {
-      airline: "Air India",
-      number: "AI-101",
-      departureTime: "12:30",
-      fare: 3900
-    },
-    {
-      airline: "Vistara",
-      number: "UK-857",
-      departureTime: "18:45",
-      fare: 4300
+async function getFlightResults({ from, to, departure, returnDate, adults, children, cabinClass, journeyType }) {
+  const url = 'https://booking-com15.p.rapidapi.com/api/v1/flights/searchFlights';
+  const params = new URLSearchParams({
+    fromId: from + '.AIRPORT',       // e.g. DEL.AIRPORT
+    toId: to + '.AIRPORT',           // e.g. BOM.AIRPORT
+    departDate: departure,           // YYYY-MM-DD
+    ...(journeyType === 'round-trip' && returnDate ? { returnDate } : {}),
+    cabinClass: cabinClass.toUpperCase(), // API expects uppercase: ECONOMY, BUSINESS, etc.
+    adults,
+    children,
+    currency_code: 'INR'
+  });
+
+  const options = {
+    method: 'GET',
+    headers: {
+      'x-rapidapi-key': '4c9328c1fbmsh3d67d4b76c41350p1ae51fjsn665cb6fcec0f',
+      'x-rapidapi-host': 'booking-com15.p.rapidapi.com'
     }
-  ];
-  // Optionally, filter or modify based on parameters
-  return sampleFlights;
+  };
+
+  try {
+    const response = await fetch(`${url}?${params.toString()}`, options);
+    if (!response.ok) throw new Error('API Error: ' + response.statusText);
+    const data = await response.json();
+
+    // Check and parse flight data as per API documentation
+    if (data && data.data && Array.isArray(data.data.flights)) {
+      return data.data.flights; // adapt to your rendering below
+    } else {
+      return [];
+    }
+  } catch (err) {
+    alert("Error fetching flight data: " + err.message);
+    return [];
+  }
 }
 
 // Utility: Format money
@@ -106,7 +118,6 @@ function showFlightResults(flights) {
     resultsDiv.innerHTML = "<p>No flights found for your selection.</p>";
     return;
   }
-
   let html = `<div class="bookingcom-style-results">`;
 
   flights.forEach(f => {
@@ -114,29 +125,29 @@ function showFlightResults(flights) {
       <div class="flight-card">
         <div class="flight-card-main">
           <div class="flight-airline-logo">
-            <img src="flight-icon.jpg" alt="${f.airline}" style="width:40px;height:40px;border-radius:8px;">
+            <img src="${f.airlineLogoUrl || 'flight-icon.jpg'}" alt="${f.airlineName || 'Airline'}" style="width:40px;height:40px;border-radius:8px;">
           </div>
           <div class="flight-times">
             <div>
-              <strong>${f.departureTime}</strong> <span class="flight-airport-code">${f.from || "DEL"}</span> 
-              <span class="flight-date">${f.departureDate || ""}</span>
+              <strong>${f.departureTime || ''}</strong>
+              <span class="flight-airport-code">${f.departureAirportCode || ''}</span>
             </div>
             <div class="flight-duration">
-              <span class="direct-badge">Direct</span>
-              <span>2h 15m</span>
+              <span class="direct-badge">${f.stops === 0 ? 'Direct' : f.stops + ' stop'}</span>
+              <span>${f.duration || ''}</span>
             </div>
             <div>
-              <strong>${f.arrivalTime || ""}</strong> <span class="flight-airport-code">${f.to || "BOM"}</span>
-              <span class="flight-date">${f.arrivalDate || ""}</span>
+              <strong>${f.arrivalTime || ''}</strong>
+              <span class="flight-airport-code">${f.arrivalAirportCode || ''}</span>
             </div>
           </div>
           <div class="flight-details">
-            <div class="flight-airline-name">${f.airline}</div>
-            <div class="flight-number">${f.number}</div>
+            <div class="flight-airline-name">${f.airlineName || ''}</div>
+            <div class="flight-number">${f.flightNumber || ''}</div>
           </div>
           <div class="flight-fare-box">
-            <div class="flight-fare-label">Eco Value fare: personal item, carry-on bag, checked bag</div>
-            <div class="flight-fare-amount">${formatINR(f.fare)}</div>
+            <div class="flight-fare-label">${f.fareType || ''}</div>
+            <div class="flight-fare-amount">₹${f.price}</div>
             <button class="btn btn-primary btn-details">View details</button>
           </div>
         </div>
@@ -149,32 +160,30 @@ function showFlightResults(flights) {
 }
 
 
-document
-  .getElementById("flightForm")
-  .addEventListener("submit", function(event) {
-    event.preventDefault();
+document.getElementById("flightForm").addEventListener("submit", async function(event) {
+  event.preventDefault();
 
-    // Get form values
-    const from = document.getElementById("from").value.trim();
-    const to = document.getElementById("to").value.trim();
-    const departure = document.getElementById("departure").value;
-    const returnDate = document.getElementById("return").value;
-    const adults = parseInt(document.getElementById("adults").value, 10);
-    const children = parseInt(document.getElementById("children").value, 10);
-    const cabinClass = document.getElementById("cabinClass").value;
+  // Gather form values
+  const from = document.getElementById("from").value.trim();
+  const to = document.getElementById("to").value.trim();
+  const departure = document.getElementById("departure").value;
+  const returnDate = document.getElementById("return").value;
+  const adults = document.getElementById("adults").value;
+  const children = document.getElementById("children").value;
+  const cabinClass = document.getElementById("cabinClass").value;
+  const journeyType = document.getElementById("journeyType").value;
 
-    // Validate input
-    if (!from || !to || !departure) {
-      alert("Please fill in all required fields.");
-      return;
-    }
-    if (from === to) {
-      alert("Origin and destination cannot be the same.");
-      return;
-    }
+  // Validate input
+  if (!from || !to || !departure) {
+    alert("Please fill in all required fields.");
+    return;
+  }
+  if (from === to) {
+    alert("Origin and destination cannot be the same.");
+    return;
+  }
 
-    // Get and show results
-    const results = getFlightResults({ from, to, departure, adults, children, cabinClass });
-    showFlightResults(results);
-
-     });
+  // Fetch and show results
+  const results = await getFlightResults({ from, to, departure, returnDate, adults, children, cabinClass, journeyType });
+  showFlightResults(results);
+});
