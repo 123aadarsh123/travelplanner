@@ -71,33 +71,44 @@ document.addEventListener("DOMContentLoaded", () => {
 async function getFlightResults({ from, to, departure, returnDate, adults, children, cabinClass, journeyType }) {
   const url = 'https://booking-com15.p.rapidapi.com/api/v1/flights/searchFlights';
   const params = new URLSearchParams({
-    fromId: from + '.AIRPORT',       // e.g. DEL.AIRPORT
-    toId: to + '.AIRPORT',           // e.g. BOM.AIRPORT
-    departDate: departure,           // YYYY-MM-DD
+    fromId: `${from}.AIRPORT`,
+    toId: `${to}.AIRPORT`,
+    departDate: departure,
     ...(journeyType === 'round-trip' && returnDate ? { returnDate } : {}),
-    cabinClass: cabinClass.toUpperCase(), // API expects uppercase: ECONOMY, BUSINESS, etc.
-    adults,
-    children,
+    cabinClass: cabinClass.toUpperCase(),
+    adults: String(adults),
+    children: String(children),
     currency_code: 'INR'
   });
 
   const options = {
     method: 'GET',
     headers: {
-      'x-rapidapi-key': 'd8105a7decmsha64e7a7961aaa53p1574a4jsn1e2396754ade',
+      'x-rapidapi-key': 'd8105a7decmsha64e7a7961aaa53p1574a4jsn1e2396754ade', // replace with your valid key
       'x-rapidapi-host': 'booking-com15.p.rapidapi.com'
     }
   };
 
- try {
+  try {
     const response = await fetch(`${url}?${params.toString()}`, options);
-    if (!response.ok) throw new Error('API Error: ' + response.statusText);
+    if (response.status === 429) {
+      alert('API limit exceeded (429 Too Many Requests). Please try again later.');
+      return [];
+    }
+    if (!response.ok) {
+      throw new Error('API Error: ' + response.statusText);
+    }
     const data = await response.json();
 
-    // Check and parse flight data as per API documentation
-    if (data && data.data && Array.isArray(data.data.flights)) {
-      return data.data.flights; // adapt to your rendering below
+    // Robust response check
+    if (data && data.data && Array.isArray(data.data.flights) && data.data.flights.length > 0) {
+      return data.data.flights;
+    } else if (data && data.message) {
+      // If API returns message or error
+      alert("API returned: " + data.message);
+      return [];
     } else {
+      alert("No flights found in the response.");
       return [];
     }
   } catch (err) {
