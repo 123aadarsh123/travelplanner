@@ -65,64 +65,12 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
-// ...rest of your code above...
-
-// Example static flight data generator (You can replace this with real API or logic)
-async function getFlightResults({ from, to, departure, returnDate, adults, children, cabinClass, journeyType }) {
-  const url = 'https://booking-com15.p.rapidapi.com/api/v1/flights/searchFlights';
-  const params = new URLSearchParams({
-    fromId: `${from}.AIRPORT`,
-    toId: `${to}.AIRPORT`,
-    departDate: departure,
-    ...(journeyType === 'round-trip' && returnDate ? { returnDate } : {}),
-    cabinClass: cabinClass.toUpperCase(),
-    adults: String(adults),
-    children: String(children),
-    currency_code: 'INR'
-  });
-
-  const options = {
-    method: 'GET',
-    headers: {
-      'x-rapidapi-key': 'd8105a7decmsha64e7a7961aaa53p1574a4jsn1e2396754ade', // replace with your valid key
-      'x-rapidapi-host': 'booking-com15.p.rapidapi.com'
-    }
-  };
-
-  try {
-    const response = await fetch(`${url}?${params.toString()}`, options);
-    if (response.status === 429) {
-      alert('API limit exceeded (429 Too Many Requests). Please try again later.');
-      return [];
-    }
-    if (!response.ok) {
-      throw new Error('API Error: ' + response.statusText);
-    }
-    const data = await response.json();
-
-    // Robust response check
-    if (data && data.data && Array.isArray(data.data.flights) && data.data.flights.length > 0) {
-      return data.data.flights;
-    } else if (data && data.message) {
-      // If API returns message or error
-      alert("API returned: " + data.message);
-      return [];
-    } else {
-      alert("No flights found in the response.");
-      return [];
-    }
-  } catch (err) {
-    alert("Error fetching flight data: " + err.message);
-    return [];
-  }
-}
-
 // Utility: Format money
 function formatINR(amount) {
   return '₹' + amount.toLocaleString('en-IN');
 }
 
-// Function to render flight results similar to Booking.com style (see image 1)
+// Function to render flight results similar to Booking.com style (see image 2)
 function showFlightResults(flights) {
   const resultsDiv = document.getElementById("flight-results");
   if (!flights || flights.length === 0) {
@@ -158,7 +106,7 @@ function showFlightResults(flights) {
           </div>
           <div class="flight-fare-box">
             <div class="flight-fare-label">${f.fareType || ''}</div>
-            <div class="flight-fare-amount">₹${f.price}</div>
+            <div class="flight-fare-amount">${formatINR(f.price)}</div>
             <button class="btn btn-primary btn-details">View details</button>
           </div>
         </div>
@@ -170,30 +118,45 @@ function showFlightResults(flights) {
   resultsDiv.innerHTML = html;
 }
 
+// Static flight data based on the provided screenshot
+function getStaticFlightResults() {
+  return [
+    {
+      airlineLogoUrl: "https://upload.wikimedia.org/wikipedia/commons/3/3e/Air_India_Logo.svg",
+      airlineName: "Air India",
+      flightNumber: "",
+      departureTime: "11:40 AM",
+      departureAirportCode: "DEL",
+      arrivalTime: "1:55 PM",
+      arrivalAirportCode: "BOM",
+      duration: "2h 15m",
+      stops: 0,
+      fareType: "Eco Value fare: personal item, carry-on bag, checked bag",
+      price: 9645
+    },
+    {
+      airlineLogoUrl: "https://upload.wikimedia.org/wikipedia/commons/3/3e/Air_India_Logo.svg",
+      airlineName: "Air India",
+      flightNumber: "",
+      departureTime: "2:40 PM",
+      departureAirportCode: "BOM",
+      arrivalTime: "4:55 PM",
+      arrivalAirportCode: "DEL",
+      duration: "2h 15m",
+      stops: 0,
+      fareType: "Eco Value fare: personal item, carry-on bag, checked bag",
+      price: 9645
+    }
+  ];
+}
 
-document.getElementById("flightForm").addEventListener("submit", async function(event) {
+// On form submit, show static result (no API call)
+document.getElementById("flightForm").addEventListener("submit", function(event) {
   event.preventDefault();
 
-  // Gather form values
-  const from = document.getElementById("from").value.trim();
-  const to = document.getElementById("to").value.trim();
-  const departure = document.getElementById("departure").value;
-  const returnDate = document.getElementById("return").value;
-  const adults = document.getElementById("adults").value;
-  const children = document.getElementById("children").value;
-  const cabinClass = document.getElementById("cabinClass").value;
-  const journeyType = document.getElementById("journeyType").value;
+  // Validate input as before, or skip if you want to always show result
 
-  // Validate input
-  if (!from || !to || !departure) {
-    alert("Please fill in all required fields.");
-    return;
-  }
-  if (from === to) {
-    alert("Origin and destination cannot be the same.");
-    return;
-  }
-  // Fetch and show results
-  const results = await getFlightResults({ from, to, departure, returnDate, adults, children, cabinClass, journeyType });
+  // Show static results only
+  const results = getStaticFlightResults();
   showFlightResults(results);
-}); // Yahi closing honi chahiye!
+});
