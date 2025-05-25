@@ -8,28 +8,28 @@ document.addEventListener("DOMContentLoaded", function () {
   }
   document.getElementById("dashboard-initial").textContent = initial;
 });
+
 // Toggle the visibility of the return date field based on journey type
 function toggleReturnDate() {
   const journeyType = document.getElementById("journeyType").value;
   const returnDateGroup = document.getElementById("returnDateGroup");
-
   if (journeyType === "round-trip") {
-    returnDateGroup.style.display = "block"; // Show the return date field
+    returnDateGroup.style.display = "block";
   } else {
-    returnDateGroup.style.display = "none"; // Hide the return date field
-    document.getElementById("return").value = ""; // Clear the return date value
+    returnDateGroup.style.display = "none";
+    document.getElementById("return").value = "";
   }
 }
+
 // Set minimum and maximum dates for departure and return inputs
 document.addEventListener("DOMContentLoaded", () => {
   const today = new Date();
   const maxDate = new Date();
-  maxDate.setDate(today.getDate() + 365); // Allow booking up to 1 year in advance
+  maxDate.setDate(today.getDate() + 365);
 
-  const formattedToday = today.toISOString().split("T")[0]; // Format today's date as YYYY-MM-DD
-  const formattedMaxDate = maxDate.toISOString().split("T")[0]; // Format max date as YYYY-MM-DD
+  const formattedToday = today.toISOString().split("T")[0];
+  const formattedMaxDate = maxDate.toISOString().split("T")[0];
 
-  // Set min and max attributes for departure and return inputs
   const departureInput = document.getElementById("departure");
   const returnInput = document.getElementById("return");
 
@@ -41,25 +41,24 @@ document.addEventListener("DOMContentLoaded", () => {
   // Update return date's minimum based on departure date
   departureInput.addEventListener("change", (event) => {
     const departureDate = event.target.value;
-
     if (departureDate) {
-      returnInput.setAttribute("min", departureDate); // Set return date's min to the selected departure date
-      returnInput.removeAttribute("disabled"); // Enable the return date field
+      returnInput.setAttribute("min", departureDate);
+      returnInput.removeAttribute("disabled");
     } else {
-      returnInput.setAttribute("min", formattedToday); // Reset to today's date if departure date is cleared
-      returnInput.setAttribute("disabled", "true"); // Disable the return date field
+      returnInput.setAttribute("min", formattedToday);
+      returnInput.setAttribute("disabled", "true");
     }
   });
 
-  // Handle trip type selection (one-way or round trip)
+  // Handle trip type selection
   const tripTypeInputs = document.getElementsByName("tripType");
   tripTypeInputs.forEach((input) => {
     input.addEventListener("change", (event) => {
       if (event.target.value === "round") {
-        returnInput.removeAttribute("disabled"); // Enable the return date field for round trips
+        returnInput.removeAttribute("disabled");
       } else {
-        returnInput.setAttribute("disabled", "true"); // Disable the return date field for one-way trips
-        returnInput.value = ""; // Clear the return date value
+        returnInput.setAttribute("disabled", "true");
+        returnInput.value = "";
       }
     });
   });
@@ -70,15 +69,35 @@ function formatINR(amount) {
   return '₹' + amount.toLocaleString('en-IN');
 }
 
-// Function to render flight results similar to Booking.com style (see image 2)
-function showFlightResults(flights) {
+// Function to render user summary and result cards
+function showFlightResultsWithSummary({from, to, departure, returnDate, cabinClass}, flights) {
   const resultsDiv = document.getElementById("flight-results");
+
+  // Map airport codes to names for display
+  const airportNames = {
+    DEL: "Delhi (DEL)",
+    BOM: "Mumbai (BOM)",
+    BLR: "Bangalore (BLR)",
+    MAA: "Chennai (MAA)",
+    CCU: "Kolkata (CCU)"
+  };
+
+  let summaryHtml = `
+    <div class="booking-search-summary" style="background:#f7fafc;border-radius:12px;padding:18px 22px;margin-bottom:24px;">
+      <b>From:</b> ${airportNames[from] || from || "-"} &nbsp; 
+      <b>To:</b> ${airportNames[to] || to || "-"} &nbsp; 
+      <b>Departure:</b> ${departure || "-"}
+      ${returnDate ? `&nbsp; <b>Return:</b> ${returnDate}` : ""}
+      &nbsp; <b>Cabin Class:</b> ${cabinClass ? cabinClass[0].toUpperCase() + cabinClass.slice(1).replace("_", " ") : "-"}
+    </div>
+  `;
+
   if (!flights || flights.length === 0) {
-    resultsDiv.innerHTML = "<p>No flights found for your selection.</p>";
+    resultsDiv.innerHTML = summaryHtml + "<p>No flights found for your selection.</p>";
     return;
   }
-  let html = `<div class="bookingcom-style-results">`;
 
+  let html = `<div class="bookingcom-style-results">`;
   flights.forEach(f => {
     html += `
       <div class="flight-card">
@@ -113,12 +132,11 @@ function showFlightResults(flights) {
       </div>
     `;
   });
-
   html += `</div>`;
-  resultsDiv.innerHTML = html;
+  resultsDiv.innerHTML = summaryHtml + html;
 }
 
-// Static flight data based on the provided screenshot
+// Static flight data (from your screenshot)
 function getStaticFlightResults() {
   return [
     {
@@ -150,13 +168,29 @@ function getStaticFlightResults() {
   ];
 }
 
-// On form submit, show static result (no API call)
+// On form submit: fetch user input, show static results and summary
 document.getElementById("flightForm").addEventListener("submit", function(event) {
   event.preventDefault();
 
-  // Validate input as before, or skip if you want to always show result
+  const from = document.getElementById("from").value.trim();
+  const to = document.getElementById("to").value.trim();
+  const departure = document.getElementById("departure").value;
+  const returnDate = document.getElementById("return").value;
+  const cabinClass = document.getElementById("cabinClass").value;
 
-  // Show static results only
-  const results = getStaticFlightResults();
-  showFlightResults(results);
+  // Optionally validate input
+  if (!from || !to || !departure) {
+    alert("Please fill in all required fields.");
+    return;
+  }
+  if (from === to) {
+    alert("Origin and destination cannot be the same.");
+    return;
+  }
+
+  // Show static results with user input summary
+  showFlightResultsWithSummary(
+    { from, to, departure, returnDate, cabinClass },
+    getStaticFlightResults()
+  );
 });
