@@ -19,6 +19,7 @@ async function fetchFlightFare(origin, destination, departDate, returnDate) {
     }
 
     const result = await response.json();
+    console.log("API Flight Result:", result);
     // You'll need to inspect the result format; adjust "minPrice" as per API response
     if (result && result.data && result.data.minPrice) {
       return result.data.minPrice;
