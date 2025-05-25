@@ -89,21 +89,17 @@ async function getFlightResults({ from, to, departure, returnDate, adults, child
     }
   };
 
-  try {
-    const response = await fetch(`${url}?${params.toString()}`, options);
-    if (!response.ok) throw new Error('API Error: ' + response.statusText);
-    const data = await response.json();
-
-    // Check and parse flight data as per API documentation
-    if (data && data.data && Array.isArray(data.data.flights)) {
-      return data.data.flights; // adapt to your rendering below
-    } else {
-      return [];
-    }
-  } catch (err) {
-    alert("Error fetching flight data: " + err.message);
-    return [];
-  }
+ try {
+  const response = await fetch(`${url}?${params.toString()}`, options);
+  console.log('API Response:', response);
+  if (!response.ok) throw new Error('API Error: ' + response.statusText);
+  const data = await response.json();
+  console.log('API Data:', data);
+  // ...
+} catch (err) {
+  console.error("Error fetching flight data:", err);
+  alert("Error fetching flight data: " + err.message);
+  return [];
 }
 
 // Utility: Format money
