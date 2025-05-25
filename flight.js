@@ -78,6 +78,7 @@ document
     const returnDate = document.getElementById("return").value;
     const adults = parseInt(document.getElementById("adults").value, 10);
     const children = parseInt(document.getElementById("children").value, 10);
+    const cabinClass = document.getElementById("cabinClass").value;
 
     // Validate input
     if (!from || !to || !departure) {
@@ -98,6 +99,7 @@ document
       return: returnDate,
       adults,
       children,
+      cabinClass,
     });
 
     window.location.href = `destination.html?${queryParams.toString()}`;
