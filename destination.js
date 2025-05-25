@@ -1,6 +1,6 @@
 async function fetchFlightFare(origin, destination, departDate, returnDate) {
-  const apiKey = "bd2a2a913da15e0abca6fa705497d04a"; // AviationStack API key
-  const url = `http://api.aviationstack.com/v1/flights?access_key=${apiKey}&dep_iata=${origin}&arr_iata=${destination}&flight_date=${departDate}`;
+  const apiKey = "4c9328c1fbmsh3d67d4b76c41350p1ae51fjsn665cb6fcec0f"; 
+  const url = `https://booking-com15.p.rapidapi.com/api/v1/flights/getMinPrice?access_key=${apiKey}&dep_iata=${origin}&arr_iata=${destination}&flight_date=${departDate}`;
 
   try {
     console.log(`Fetching flight data from: ${url}`); // Log the API URL
