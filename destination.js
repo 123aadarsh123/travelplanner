@@ -1,38 +1,33 @@
 async function fetchFlightFare(origin, destination, departDate, returnDate) {
-  const apiKey = "4c9328c1fbmsh3d67d4b76c41350p1ae51fjsn665cb6fcec0f"; 
-  const url = `https://booking-com15.p.rapidapi.com/api/v1/flights/getMinPrice?access_key=${apiKey}&dep_iata=${origin}&arr_iata=${destination}&flight_date=${departDate}`;
+  // Map city codes to IATA codes if required; here we assume user enters IATA codes (e.g., BOM, DEL)
+  // If not, add a lookup table to convert city names to IATA codes
+
+  const url = `https://booking-com15.p.rapidapi.com/api/v1/flights/getMinPrice?fromId=${origin}.AIRPORT&toId=${destination}.AIRPORT&cabinClass=ECONOMY&currency_code=AED`;
+
+  const options = {
+    method: 'GET',
+    headers: {
+      'x-rapidapi-key': '4c9328c1fbmsh3d67d4b76c41350p1ae51fjsn665cb6fcec0f',
+      'x-rapidapi-host': 'booking-com15.p.rapidapi.com'
+    }
+  };
 
   try {
-    console.log(`Fetching flight data from: ${url}`); // Log the API URL
-    const response = await fetch(url);
+    const response = await fetch(url, options);
     if (!response.ok) {
       throw new Error(`Error fetching flight data: ${response.statusText}`);
     }
 
-    const data = await response.json();
-    console.log("API Response:", data); // Log the full API response
-
-    // Check if the API returned valid data
-    if (data.data && data.data.length > 0) {
-      // Extract flight prices (if available)
-      const flightPrices = data.data
-        .map((flight) => flight.price || 0) // Replace `flight.price` with the correct field if necessary
-        .filter((price) => price > 0);
-
-      if (flightPrices.length > 0) {
-        // Find the lowest fare among the available prices
-        const lowestFare = Math.min(...flightPrices);
-        return lowestFare;
-      } else {
-        console.warn("No flight prices available.");
-        return "No flight prices available.";
-      }
+    const result = await response.json();
+    // You'll need to inspect the result format; adjust "minPrice" as per API response
+    if (result && result.data && result.data.minPrice) {
+      return result.data.minPrice;
     } else {
-      console.warn("No flight data available.");
-      return "No flight data available.";
+      console.warn("No flight price data available.");
+      return "No flight price data available.";
     }
   } catch (error) {
-    console.error("Error:", error.message);
+    console.error(error);
     return "Error fetching flight data.";
   }
 }
