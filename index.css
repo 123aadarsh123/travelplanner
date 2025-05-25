@@ -33,6 +33,95 @@ body {
 .flight-table th {
   background: #f4f4f4;
 }
+.bookingcom-style-results {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin-top: 32px;
+}
+.flight-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+}
+.flight-card-main {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+.flight-airline-logo img {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+}
+.flight-times {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.flight-duration {
+  font-size: 1.1rem;
+  color: #198754;
+  margin: 6px 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.direct-badge {
+  background: #e6f4ea;
+  color: #198754;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 8px;
+  font-size: 0.95em;
+}
+.flight-details {
+  flex: 1;
+  text-align: left;
+}
+.flight-airline-name {
+  font-weight: 600;
+  font-size: 1.05em;
+}
+.flight-number {
+  color: #888;
+  font-size: 0.95em;
+}
+.flight-fare-box {
+  flex: 1;
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+}
+.flight-fare-label {
+  font-size: 0.85em;
+  color: #555;
+}
+.flight-fare-amount {
+  font-size: 1.35em;
+  color: #195bee;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+.btn-details {
+  background: #195bee;
+  color: #fff;
+  border: none;
+  border-radius: 7px;
+  padding: 8px 16px;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.btn-details:hover {
+  background: #0f3ea2;
+}
 
 .logout-btn {
   width: 60px;
