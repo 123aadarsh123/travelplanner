@@ -81,16 +81,21 @@ function showFlightResultsWithSummary({from, to, departure, returnDate, cabinCla
     MAA: "Chennai (MAA)",
     CCU: "Kolkata (CCU)"
   };
+  showFlightResultsWithSummary(
+  { from, to, departure, returnDate, cabinClass, tripType },
+  getStaticFlightResults()
+);
 
   let summaryHtml = `
-    <div class="booking-search-summary" style="background:#f7fafc;border-radius:12px;padding:18px 22px;margin-bottom:24px;">
-      <b>From:</b> ${airportNames[from] || from || "-"} &nbsp; 
-      <b>To:</b> ${airportNames[to] || to || "-"} &nbsp; 
-      <b>Departure:</b> ${departure || "-"}
-      ${returnDate ? `&nbsp; <b>Return:</b> ${returnDate}` : ""}
-      &nbsp; <b>Cabin Class:</b> ${cabinClass ? cabinClass[0].toUpperCase() + cabinClass.slice(1).replace("_", " ") : "-"}
-    </div>
-  `;
+  <div class="booking-search-summary" style="background:#f7fafc;border-radius:12px;padding:18px 22px;margin-bottom:24px;">
+    <b>Trip Type:</b> ${tripType === "round" ? "Round Trip" : "One Way"} &nbsp; 
+    <b>From:</b> ${airportNames[from] || from || "-"} &nbsp; 
+    <b>To:</b> ${airportNames[to] || to || "-"} &nbsp; 
+    <b>Departure:</b> ${departure || "-"}
+    ${returnDate ? `&nbsp; <b>Return:</b> ${returnDate}` : ""}
+    &nbsp; <b>Cabin Class:</b> ${cabinClass ? cabinClass[0].toUpperCase() + cabinClass.slice(1).replace("_", " ") : "-"}
+  </div>
+`;
 
   if (!flights || flights.length === 0) {
     resultsDiv.innerHTML = summaryHtml + "<p>No flights found for your selection.</p>";
@@ -171,7 +176,7 @@ function getStaticFlightResults() {
 // On form submit: fetch user input, show static results and summary
 document.getElementById("flightForm").addEventListener("submit", function(event) {
   event.preventDefault();
-
+const tripType = document.getElementById("tripType").value;
   const from = document.getElementById("from").value.trim();
   const to = document.getElementById("to").value.trim();
   const departure = document.getElementById("departure").value;
