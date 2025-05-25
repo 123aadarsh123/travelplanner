@@ -138,6 +138,7 @@ document
     const from = document.getElementById("from").value.trim();
     const to = document.getElementById("to").value.trim();
     const departure = document.getElementById("departure").value;
+    const returnDate = document.getElementById("return").value; // Add this line
     const adults = parseInt(document.getElementById("adults").value, 10);
     const children = parseInt(document.getElementById("children").value, 10);
     const cabinClass = document.getElementById("cabinClass").value;
@@ -155,9 +156,9 @@ document
     // Get and show results
     const results = getFlightResults({ from, to, departure, adults, children, cabinClass });
     showFlightResults(results);
-  });
 
-    // Redirect to destination page with query parameters
+    // If you want to redirect, uncomment below and remove/comment above 2 lines
+    /*
     const queryParams = new URLSearchParams({
       from,
       to,
@@ -167,6 +168,8 @@ document
       children,
       cabinClass,
     });
-
     window.location.href = `destination.html?${queryParams.toString()}`;
+    */
   });
+
+    
