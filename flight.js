@@ -65,17 +65,79 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
-// Handle form submission
+// ...rest of your code above...
+
+// Example static flight data generator (You can replace this with real API or logic)
+function getFlightResults({ from, to, departure, adults, children, cabinClass }) {
+  // For demo: generate 3 random flights
+  const sampleFlights = [
+    {
+      airline: "IndiGo",
+      number: "6E-203",
+      departureTime: "09:00",
+      fare: 3200
+    },
+    {
+      airline: "Air India",
+      number: "AI-101",
+      departureTime: "12:30",
+      fare: 3900
+    },
+    {
+      airline: "Vistara",
+      number: "UK-857",
+      departureTime: "18:45",
+      fare: 4300
+    }
+  ];
+  // Optionally, filter or modify based on parameters
+  return sampleFlights;
+}
+
+// Utility: Format money
+function formatINR(amount) {
+  return '₹' + amount.toLocaleString('en-IN');
+}
+
+// Function to render flight results to the DOM
+function showFlightResults(flights) {
+  const resultsDiv = document.getElementById("flight-results");
+  if (!flights || flights.length === 0) {
+    resultsDiv.innerHTML = "<p>No flights found for your selection.</p>";
+    return;
+  }
+  let html = `<table class="flight-table">
+    <thead>
+      <tr>
+        <th>Airline</th>
+        <th>Flight No.</th>
+        <th>Departure Time</th>
+        <th>Fare</th>
+      </tr>
+    </thead>
+    <tbody>`;
+  flights.forEach(f => {
+    html += `<tr>
+      <td>${f.airline}</td>
+      <td>${f.number}</td>
+      <td>${f.departureTime}</td>
+      <td>${formatINR(f.fare)}</td>
+    </tr>`;
+  });
+  html += '</tbody></table>';
+  resultsDiv.innerHTML = html;
+}
+
+// Handle form submission (override redirect)
 document
-  .getElementById("travelForm")
-  .addEventListener("submit", async (event) => {
+  .getElementById("flightForm")
+  .addEventListener("submit", function(event) {
     event.preventDefault();
 
     // Get form values
     const from = document.getElementById("from").value.trim();
     const to = document.getElementById("to").value.trim();
     const departure = document.getElementById("departure").value;
-    const returnDate = document.getElementById("return").value;
     const adults = parseInt(document.getElementById("adults").value, 10);
     const children = parseInt(document.getElementById("children").value, 10);
     const cabinClass = document.getElementById("cabinClass").value;
@@ -85,11 +147,15 @@ document
       alert("Please fill in all required fields.");
       return;
     }
-
     if (from === to) {
       alert("Origin and destination cannot be the same.");
       return;
     }
+
+    // Get and show results
+    const results = getFlightResults({ from, to, departure, adults, children, cabinClass });
+    showFlightResults(results);
+  });
 
     // Redirect to destination page with query parameters
     const queryParams = new URLSearchParams({
