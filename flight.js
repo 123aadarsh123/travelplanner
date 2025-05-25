@@ -84,7 +84,7 @@ async function getFlightResults({ from, to, departure, returnDate, adults, child
   const options = {
     method: 'GET',
     headers: {
-      'x-rapidapi-key': '4c9328c1fbmsh3d67d4b76c41350p1ae51fjsn665cb6fcec0f',
+      'x-rapidapi-key': 'd8105a7decmsha64e7a7961aaa53p1574a4jsn1e2396754ade',
       'x-rapidapi-host': 'booking-com15.p.rapidapi.com'
     }
   };
