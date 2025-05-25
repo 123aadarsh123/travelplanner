@@ -182,6 +182,7 @@ const tripType = document.getElementById("tripType").value;
   const departure = document.getElementById("departure").value;
   const returnDate = document.getElementById("return").value;
   const cabinClass = document.getElementById("cabinClass").value;
+  const resultsDiv = document.getElementById("flight-results");
 
   // Optionally validate input
   if (!from || !to || !departure) {
