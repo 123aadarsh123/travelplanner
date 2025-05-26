@@ -87,7 +87,9 @@ function showFlightResultsWithSummary(
 
   let summaryHtml = `
   <div class="booking-search-summary" style="background:#f7fafc;border-radius:12px;padding:18px 22px;margin-bottom:24px;">
-    <b>Journey Type:</b> ${journeyType === "round" ? "Round Trip" : "One Way"} &nbsp; 
+    <b>Journey Type:</b> ${
+      journeyType === "round" ? "Round Trip" : "One Way"
+    } &nbsp; 
     <b>From:</b> ${airportNames[from] || from || "-"} &nbsp; 
     <b>To:</b> ${airportNames[to] || to || "-"} &nbsp; 
     <b>Departure:</b> ${departure || "-"}
@@ -192,14 +194,15 @@ document
   .getElementById("flightForm")
   .addEventListener("submit", function (event) {
     event.preventDefault();
-    const journeyType = document.getElementById("journeyType").value;
     const from = document.getElementById("from").value.trim();
     const to = document.getElementById("to").value.trim();
     const departure = document.getElementById("departure").value;
     const returnDate = document.getElementById("return").value;
     const cabinClass = document.getElementById("cabinClass").value;
-    const resultsDiv = document.getElementById("flight-results");
-
+    const journeyTypeInput = document.querySelector(
+      'input[name="journeyType"]:checked'
+    );
+    const journeyType = journeyTypeInput ? journeyTypeInput.value : "";
     // Optionally validate input
     if (!from || !to || !departure) {
       alert("Please fill in all required fields.");
@@ -211,8 +214,8 @@ document
     }
 
     // Show static results with user input summary
-showFlightResultsWithSummary(
-  { from, to, departure, returnDate, cabinClass, journeyType },
-  getStaticFlightResults()
-);
+    showFlightResultsWithSummary(
+      { from, to, departure, returnDate, cabinClass, journeyType },
+      getStaticFlightResults()
+    );
   });
