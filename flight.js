@@ -210,6 +210,7 @@ document
     event.preventDefault();
     const from = document.getElementById("from").value.trim();
     const to = document.getElementById("to").value.trim();
+    console.log("FROM:", from, "TO:", to);
     const departure = document.getElementById("departure").value;
     const returnDate = document.getElementById("return").value;
     const cabinClass = document.getElementById("cabinClass").value;
