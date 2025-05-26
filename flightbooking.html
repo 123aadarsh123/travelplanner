@@ -193,52 +193,17 @@
     </div>
 
     <div class="container">
-        <div style="color:#666; font-size:1rem; margin-bottom:8px;">
-            Round-trip &nbsp;•&nbsp; 2 travelers &nbsp;•&nbsp; Sat, Jun 28 - Sat, Jul 5
+        <div style="color:#666; font-size:1rem; margin-bottom:8px;" id="trip-summary">
+            <!-- Will be updated by JS -->
         </div>
-        <div class="section-title" style="margin-bottom:18px;">New Delhi to Mumbai</div>
+        <div class="section-title" style="margin-bottom:18px;" id="route-title">New Delhi to Mumbai</div>
 
         <div class="flex-row">
             <!-- Traveler Details -->
             <div style="flex:2;">
                 <div class="section-title" style="font-size:1.15rem; margin-bottom:8px;">Enter your details</div>
                 <div class="subtitle">Add traveler details and review baggage options</div>
-                <div class="traveler-cards">
-                    <!-- Adult Card -->
-                    <div class="card">
-                        <div class="card-title">👤 Adult 1</div>
-                        <button
-                            style="background:#fff;border:1px solid #0071c2;color:#0071c2;padding:8px 18px;border-radius:5px;font-weight:500;cursor:pointer;margin-bottom:14px;">Add
-                            this traveler's details</button>
-                        <ul class="bag-list">
-                            <li>1 personal item<br><span style="color:#007a1c;">Included</span><br><span
-                                    style="font-size:0.95em;">Fits under the seat in front of you</span></li>
-                            <li style="margin-top:10px;">1 carry-on bag<br><span
-                                    style="color:#007a1c;">Included</span><br><span style="font-size:0.95em;">25 x 35 x
-                                    55 cm · 7 kg</span></li>
-                            <li style="margin-top:10px;">1 checked bag<br><span
-                                    style="color:#007a1c;">Included</span><br><span style="font-size:0.95em;">15
-                                    kg</span></li>
-                        </ul>
-                    </div>
-                    <!-- Child Card -->
-                    <div class="card">
-                        <div class="card-title">🧒 Child 1</div>
-                        <button
-                            style="background:#fff;border:1px solid #0071c2;color:#0071c2;padding:8px 18px;border-radius:5px;font-weight:500;cursor:pointer;margin-bottom:14px;">Add
-                            this traveler's details</button>
-                        <ul class="bag-list">
-                            <li>1 personal item<br><span style="color:#007a1c;">Included</span><br><span
-                                    style="font-size:0.95em;">Fits under the seat in front of you</span></li>
-                            <li style="margin-top:10px;">1 carry-on bag<br><span
-                                    style="color:#007a1c;">Included</span><br><span style="font-size:0.95em;">25 x 35 x
-                                    55 cm · 7 kg</span></li>
-                            <li style="margin-top:10px;">1 checked bag<br><span
-                                    style="color:#007a1c;">Included</span><br><span style="font-size:0.95em;">15
-                                    kg</span></li>
-                        </ul>
-                    </div>
-                </div>
+                <div class="traveler-cards"></div>
 
                 <!-- Contact Details -->
                 <div class="contact-section">
@@ -266,20 +231,13 @@
             <div class="price-details card" style="flex:1;">
                 <div class="section-title" style="font-size:1.1rem; margin-bottom:16px;">Price details</div>
                 <div class="price-row">
-                    <span class="price-label">Flight (2 travelers)</span>
+                    <span class="price-label">Flight (<span id="traveler-count">2</span> travelers)</span>
                 </div>
-                <div class="price-row">
-                    <span>Adult (1)</span>
-                    <span>INR11,336.86</span>
-                </div>
-                <div class="price-row">
-                    <span>Child (1)</span>
-                    <span>INR11,336.86</span>
-                </div>
+                <div id="price-breakdown"></div>
                 <hr style="margin:14px 0;">
                 <div class="price-row" style="margin-bottom:0;">
                     <span class="price-label" style="font-weight:600;">Total</span>
-                    <span class="price-total">INR22,673.72</span>
+                    <span class="price-total" id="total-price">INR22,673.72</span>
                 </div>
                 <div style="font-size:0.97em; color:#666; margin-top:10px;">
                     Includes taxes and fees
@@ -290,6 +248,57 @@
             </div>
         </div>
     </div>
+    <!-- Contact Details -->
+    <div class="contact-section">
+        <div class="section-title" style="font-size:1.1rem; margin-bottom:10px;">Contact details</div>
+        <form>
+            <label for="contact-email">Contact email <span style="color:#d00;">*</span></label>
+            <input type="email" id="contact-email" required placeholder="Enter your email">
+            <div style="font-size:0.95em; color:#666; margin-bottom:12px;">We'll send your flight
+                confirmation here</div>
+            <label for="phone">Phone number <span style="color:#d00;">*</span></label>
+            <div class="phone-row">
+                <img src="https://flagcdn.com/in.svg" alt="IN" class="flag">
+                <span>+91</span>
+                <input type="text" id="phone" required placeholder="Enter phone number" style="flex:1;">
+            </div>
+            <div style="margin-top:28px;">
+                <a href="#" class="back-link">&lt; Back</a>
+                <button type="submit" class="btn-next">Next</button>
+            </div>
+        </form>
+    </div>
+    </div>
+
+    <!-- Price Details -->
+    <div class="price-details card" style="flex:1;">
+        <div class="section-title" style="font-size:1.1rem; margin-bottom:16px;">Price details</div>
+        <div class="price-row">
+            <span class="price-label">Flight (2 travelers)</span>
+        </div>
+        <div class="price-row">
+            <span>Adult (1)</span>
+            <span>INR11,336.86</span>
+        </div>
+        <div class="price-row">
+            <span>Child (1)</span>
+            <span>INR11,336.86</span>
+        </div>
+        <hr style="margin:14px 0;">
+        <div class="price-row" style="margin-bottom:0;">
+            <span class="price-label" style="font-weight:600;">Total</span>
+            <span class="price-total">INR22,673.72</span>
+        </div>
+        <div style="font-size:0.97em; color:#666; margin-top:10px;">
+            Includes taxes and fees
+        </div>
+        <div style="margin-top:10px; color:#007a1c; font-size:0.97em;">
+            ✓ No hidden fees – track your price at every step
+        </div>
+    </div>
+    </div>
+    </div>
+    <script src="flightbooking.js"></script>
 </body>
 
 </html>
