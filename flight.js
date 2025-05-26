@@ -174,14 +174,13 @@ function showFlightResultsWithSummary(
   resultsDiv.innerHTML = summaryHtml + html;
 }
 // Add this block to handle "View details" button clicks
+// Attach event listeners AFTER rendering the buttons
 document.querySelectorAll(".btn-details").forEach((btn) => {
   btn.addEventListener("click", function () {
     const proceed = confirm("Proceed for booking?");
     if (proceed) {
-      alert("You chose to proceed with booking!");
+      alert("You choose to proceed with booking!");
       // You can redirect or open booking page here if needed
-    } else {
-      // Do nothing or show a message if you want
     }
   });
 });
@@ -208,7 +207,7 @@ function getStaticFlightResults(
       duration: "2h 15m",
       stops: 0,
       fareType: "Eco Value fare: personal item, carry-on bag, checked bag",
-      price: getFare(from, to, cabinClass, adults, children),
+      price: getFare(to, from, cabinClass, adults, children),
     },
     {
       airlineLogoUrl:
@@ -222,7 +221,7 @@ function getStaticFlightResults(
       duration: "2h 15m",
       stops: 0,
       fareType: "Eco Value fare: personal item, carry-on bag, checked bag",
-      price: getFare(from, to, cabinClass, adults, children),
+      price: getFare(to, from, cabinClass, adults, children),
     },
     {
       airlineLogoUrl:
@@ -236,7 +235,7 @@ function getStaticFlightResults(
       duration: "2h 15m",
       stops: 0,
       fareType: "Eco Value fare: personal item, carry-on bag, checked bag",
-      price: getFare(from, to, cabinClass, adults, children),
+      price: getFare(to, from, cabinClass, adults, children),
     },
   ];
 
@@ -255,7 +254,7 @@ function getStaticFlightResults(
         duration: "2h 15m",
         stops: 0,
         fareType: "Eco Value fare: personal item, carry-on bag, checked bag",
-        price: getFare(from, to, cabinClass, adults, children),
+        price: getFare(to, from, cabinClass, adults, children),
       },
       {
         airlineLogoUrl:
@@ -269,7 +268,7 @@ function getStaticFlightResults(
         duration: "2h 15m",
         stops: 0,
         fareType: "Eco Value fare: personal item, carry-on bag, checked bag",
-        price: getFare(from, to, cabinClass, adults, children),
+        price: getFare(to, from, cabinClass, adults, children),
       },
       {
         airlineLogoUrl:
@@ -283,7 +282,7 @@ function getStaticFlightResults(
         duration: "2h 15m",
         stops: 0,
         fareType: "Eco Value fare: personal item, carry-on bag, checked bag",
-        price: getFare(from, to, cabinClass, adults, children),
+        price: getFare(to, from, cabinClass, adults, children),
       },
     ];
 
