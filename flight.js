@@ -180,7 +180,7 @@ function getStaticFlightResults(from, to, journeyType) {
       duration: "2h 15m",
       stops: 0,
       fareType: "Eco Value fare: personal item, carry-on bag, checked bag",
-      price: getFare(from, to),
+      price: getFare(from, to, cabinClass),
     },
     {
       airlineLogoUrl:
@@ -194,7 +194,7 @@ function getStaticFlightResults(from, to, journeyType) {
       duration: "2h 15m",
       stops: 0,
       fareType: "Eco Value fare: personal item, carry-on bag, checked bag",
-      price: getFare(from, to),
+      price: getFare(from, to, cabinClass),
     },
     {
       airlineLogoUrl:
@@ -208,7 +208,7 @@ function getStaticFlightResults(from, to, journeyType) {
       duration: "2h 15m",
       stops: 0,
       fareType: "Eco Value fare: personal item, carry-on bag, checked bag",
-      price: getFare(from, to),
+      price: getFare(from, to, cabinClass),
     },
   ];
 
@@ -227,7 +227,7 @@ function getStaticFlightResults(from, to, journeyType) {
         duration: "2h 15m",
         stops: 0,
         fareType: "Eco Value fare: personal item, carry-on bag, checked bag",
-        price: getFare(to, from),
+        price: getFare(from, to, cabinClass),
       },
       {
         airlineLogoUrl:
@@ -241,7 +241,7 @@ function getStaticFlightResults(from, to, journeyType) {
         duration: "2h 15m",
         stops: 0,
         fareType: "Eco Value fare: personal item, carry-on bag, checked bag",
-        price: getFare(to, from),
+        price: getFare(from, to, cabinClass),
       },
       {
         airlineLogoUrl:
@@ -255,7 +255,7 @@ function getStaticFlightResults(from, to, journeyType) {
         duration: "2h 15m",
         stops: 0,
         fareType: "Eco Value fare: personal item, carry-on bag, checked bag",
-        price: getFare(to, from),
+        price: getFare(from, to, cabinClass),
       },
     ];
 
@@ -271,23 +271,28 @@ function getStaticFlightResults(from, to, journeyType) {
     return combined;
   }
 
-  // For one-way, just return outbound flights
   return flights;
 }
 
-function getFare(from, to) {
-  // Simple static fare logic, aap chahein to aur logic laga sakte hain
+function getFare(from, to, cabinClass) {
+  let baseFare = 9000;
   if ((from === "DEL" && to === "BOM") || (from === "BOM" && to === "DEL")) {
-    return 9645;
+    baseFare = 9645;
   }
   if ((from === "DEL" && to === "BLR") || (from === "BLR" && to === "DEL")) {
-    return 10500;
+    baseFare = 10500;
   }
   if ((from === "DEL" && to === "MAA") || (from === "MAA" && to === "DEL")) {
-    return 11200;
+    baseFare = 11200;
   }
-  // Default fare
-  return 9000;
+
+  // Cabin class multiplier
+  let multiplier = 1;
+  if (cabinClass === "premium_economy") multiplier = 1.5;
+  else if (cabinClass === "business") multiplier = 2.5;
+  else if (cabinClass === "first") multiplier = 4;
+
+  return Math.round(baseFare * multiplier);
 }
 // On form submit: fetch user input, show static results and summary
 document
@@ -318,6 +323,6 @@ document
     // Show static results with user input summary
     showFlightResultsWithSummary(
       { from, to, departure, returnDate, cabinClass, journeyType },
-      getStaticFlightResults(from, to, journeyType)
+      getStaticFlightResults(from, to, journeyType, cabinClass)
     );
   });
