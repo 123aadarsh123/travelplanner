@@ -1,17 +1,58 @@
 window.addEventListener("DOMContentLoaded", function () {
-  // Get values from sessionStorage (default to 1 adult if not set)
+  // Get values from sessionStorage (with sensible defaults)
   const adults = parseInt(sessionStorage.getItem("bookingAdults") || "1", 10);
   const children = parseInt(
     sessionStorage.getItem("bookingChildren") || "0",
     10
   );
+  const from = sessionStorage.getItem("bookingFrom") || "DEL";
+  const to = sessionStorage.getItem("bookingTo") || "BOM";
+  const journeyType =
+    sessionStorage.getItem("bookingJourneyType") || "round-trip";
+  const departure = sessionStorage.getItem("bookingDeparture") || "2025-06-28";
+  const returnDate = sessionStorage.getItem("bookingReturn") || "2025-07-05";
 
-  // Update trip summary and route title if you want to make them dynamic
-  const tripSummary = document.getElementById("trip-summary");
+  // Airport code to name
+  const airportNames = {
+    DEL: "New Delhi",
+    BOM: "Mumbai",
+    BLR: "Bangalore",
+    MAA: "Chennai",
+    CCU: "Kolkata",
+  };
+
+  // Format dates
+  function formatDate(dateStr) {
+    if (!dateStr) return "-";
+    const d = new Date(dateStr);
+    if (isNaN(d)) return dateStr;
+    return d.toLocaleDateString("en-US", {
+      weekday: "short",
+      month: "short",
+      day: "numeric",
+    });
+  }
+
+  // Update trip summary
   const travelerCount = adults + children;
-  tripSummary.innerHTML = `Round-trip &nbsp;•&nbsp; ${travelerCount} traveler${
-    travelerCount > 1 ? "s" : ""
-  } &nbsp;•&nbsp; Sat, Jun 28 - Sat, Jul 5`;
+  const tripSummary = document.getElementById("trip-summary");
+  tripSummary.innerHTML = `
+    ${journeyType === "round-trip" ? "Round-trip" : "One-way"}
+    &nbsp;•&nbsp; ${travelerCount} traveler${travelerCount > 1 ? "s" : ""}
+    &nbsp;•&nbsp; ${formatDate(departure)}${
+    journeyType === "round-trip" && returnDate
+      ? " - " + formatDate(returnDate)
+      : ""
+  }
+  `;
+
+  // Update route title
+  const routeTitle = document.getElementById("route-title");
+  routeTitle.textContent = `${airportNames[from] || from} to ${
+    airportNames[to] || to
+  }`;
+
+  // ...rest of your code (traveler cards, price, etc)...
 
   // Generate traveler cards
   let cardsHtml = "";
