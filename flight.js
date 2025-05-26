@@ -156,7 +156,7 @@ function showFlightResultsWithSummary(
 }
 
 // Static flight data (from your screenshot)
-function getStaticFlightResults() {
+function getStaticFlightResults(from, to) {
   return [
     {
       airlineLogoUrl:
@@ -164,13 +164,13 @@ function getStaticFlightResults() {
       airlineName: "Air India",
       flightNumber: "",
       departureTime: "11:40 AM",
-      departureAirportCode: "DEL",
+      departureAirportCode: from,
       arrivalTime: "1:55 PM",
-      arrivalAirportCode: "BOM",
+      arrivalAirportCode: to,
       duration: "2h 15m",
       stops: 0,
       fareType: "Eco Value fare: personal item, carry-on bag, checked bag",
-      price: 9645,
+      price: getFare(from, to),
     },
     {
       airlineLogoUrl:
@@ -178,17 +178,31 @@ function getStaticFlightResults() {
       airlineName: "Air India",
       flightNumber: "",
       departureTime: "2:40 PM",
-      departureAirportCode: "BOM",
+      departureAirportCode: to,
       arrivalTime: "4:55 PM",
-      arrivalAirportCode: "DEL",
+      arrivalAirportCode: from,
       duration: "2h 15m",
       stops: 0,
       fareType: "Eco Value fare: personal item, carry-on bag, checked bag",
-      price: 9645,
+      price: getFare(to, from),
     },
   ];
 }
 
+function getFare(from, to) {
+  // Simple static fare logic, aap chahein to aur logic laga sakte hain
+  if ((from === "DEL" && to === "BOM") || (from === "BOM" && to === "DEL")) {
+    return 9645;
+  }
+  if ((from === "DEL" && to === "BLR") || (from === "BLR" && to === "DEL")) {
+    return 10500;
+  }
+  if ((from === "DEL" && to === "MAA") || (from === "MAA" && to === "DEL")) {
+    return 11200;
+  }
+  // Default fare
+  return 9000;
+}
 // On form submit: fetch user input, show static results and summary
 document
   .getElementById("flightForm")
@@ -213,6 +227,6 @@ document
     // Show static results with user input summary
     showFlightResultsWithSummary(
       { from, to, departure, returnDate, cabinClass, journeyType },
-      getStaticFlightResults()
+      getStaticFlightResults(from, to)
     );
   });
