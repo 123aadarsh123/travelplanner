@@ -51,17 +51,16 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // Handle trip type selection
-  const journeyTypeInputs = document.getElementsByName("journeyType");
-  journeyTypeInputs.forEach((input) => {
-    input.addEventListener("change", (event) => {
-      if (event.target.value === "round-trip") {
-        // <-- yahan change karein
-        returnInput.removeAttribute("disabled");
-      } else {
-        returnInput.setAttribute("disabled", "true");
-        returnInput.value = "";
-      }
-    });
+  const journeyTypeSelect = document.getElementById("journeyType");
+  journeyTypeSelect.addEventListener("change", (event) => {
+    if (event.target.value === "round-trip") {
+      returnInput.removeAttribute("disabled");
+      document.getElementById("returnDateGroup").style.display = "block";
+    } else {
+      returnInput.setAttribute("disabled", "true");
+      returnInput.value = "";
+      document.getElementById("returnDateGroup").style.display = "none";
+    }
   });
 });
 
@@ -200,10 +199,7 @@ document
     const departure = document.getElementById("departure").value;
     const returnDate = document.getElementById("return").value;
     const cabinClass = document.getElementById("cabinClass").value;
-    const journeyTypeInput = document.querySelector(
-      'input[name="journeyType"]:checked'
-    );
-    const journeyType = journeyTypeInput ? journeyTypeInput.value : "";
+    const journeyType = document.getElementById("journeyType").value;
     // Optionally validate input
     if (!from || !to || !departure) {
       alert("Please fill in all required fields.");
