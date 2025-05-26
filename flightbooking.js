@@ -1,16 +1,12 @@
 window.addEventListener("DOMContentLoaded", function () {
   // Get values from sessionStorage (with sensible defaults)
   const adults = parseInt(sessionStorage.getItem("bookingAdults") || "1", 10);
-  const children = parseInt(
-    sessionStorage.getItem("bookingChildren") || "0",
-    10
-  );
+  const children = parseInt(sessionStorage.getItem("bookingChildren") || "0", 10);
   const from = sessionStorage.getItem("bookingFrom") || "DEL";
   const to = sessionStorage.getItem("bookingTo") || "BOM";
-  const journeyType =
-    sessionStorage.getItem("bookingJourneyType") || "round-trip";
+  const journeyType = sessionStorage.getItem("bookingJourneyType") || "round-trip";
   const departure = sessionStorage.getItem("bookingDeparture") || "2025-06-28";
-  const returnDate = sessionStorage.getItem("bookingReturn") || "2025-07-05";
+  const returnDate = sessionStorage.getItem("bookingReturn") || "";
 
   // Airport code to name
   const airportNames = {
@@ -21,7 +17,7 @@ window.addEventListener("DOMContentLoaded", function () {
     CCU: "Kolkata",
   };
 
-  // Format dates
+  // Format date as: Sat, Jun 28
   function formatDate(dateStr) {
     if (!dateStr) return "-";
     const d = new Date(dateStr);
@@ -33,24 +29,18 @@ window.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // Update trip summary
+  // Compose summary line
   const travelerCount = adults + children;
   const tripSummary = document.getElementById("trip-summary");
   tripSummary.innerHTML = `
     ${journeyType === "round-trip" ? "Round-trip" : "One-way"}
     &nbsp;•&nbsp; ${travelerCount} traveler${travelerCount > 1 ? "s" : ""}
-    &nbsp;•&nbsp; ${formatDate(departure)}${
-    journeyType === "round-trip" && returnDate
-      ? " - " + formatDate(returnDate)
-      : ""
-  }
+    &nbsp;•&nbsp; ${formatDate(departure)}${journeyType === "round-trip" && returnDate ? " - " + formatDate(returnDate) : ""}
   `;
 
-  // Update route title
+  // Compose route title
   const routeTitle = document.getElementById("route-title");
-  routeTitle.textContent = `${airportNames[from] || from} to ${
-    airportNames[to] || to
-  }`;
+  routeTitle.textContent = `${airportNames[from] || from} to ${airportNames[to] || to}`;
 
   // ...rest of your code (traveler cards, price, etc)...
 
