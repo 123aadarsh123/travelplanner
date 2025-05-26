@@ -172,18 +172,19 @@ function showFlightResultsWithSummary(
 
   html += `</div>`;
   resultsDiv.innerHTML = summaryHtml + html;
-}
-// Add this block to handle "View details" button clicks
-// Attach event listeners AFTER rendering the buttons
-document.querySelectorAll(".btn-details").forEach((btn) => {
-  btn.addEventListener("click", function () {
-    const proceed = confirm("Proceed for booking?");
-    if (proceed) {
-      alert("You choose to proceed with booking!");
-      // You can redirect or open booking page here if needed
-    }
+  // Add this block to handle "View details" button clicks
+  // Attach event listeners AFTER rendering the buttons
+  document.querySelectorAll(".btn-details").forEach((btn) => {
+    btn.addEventListener("click", function () {
+      const proceed = confirm("Proceed for booking?");
+      if (proceed) {
+        alert("You choose to proceed with booking!");
+        // You can redirect or open booking page here if needed
+      }
+    });
   });
-});
+}
+
 // Static flight data (from your screenshot)
 function getStaticFlightResults(
   from,
