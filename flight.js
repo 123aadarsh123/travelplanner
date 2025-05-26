@@ -380,3 +380,18 @@ document
       )
     );
   });
+document.querySelectorAll(".btn-details").forEach((btn) => {
+  btn.addEventListener("click", function () {
+    const proceed = confirm("Proceed for booking?");
+    if (proceed) {
+      sessionStorage.setItem("bookingAdults", adults);
+      sessionStorage.setItem("bookingChildren", children);
+      sessionStorage.setItem("bookingFrom", from);
+      sessionStorage.setItem("bookingTo", to);
+      sessionStorage.setItem("bookingJourneyType", journeyType);
+      sessionStorage.setItem("bookingDeparture", departure);
+      sessionStorage.setItem("bookingReturn", returnDate || "");
+      window.location.href = "flightbooking.html";
+    }
+  });
+});
