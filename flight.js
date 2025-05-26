@@ -178,8 +178,8 @@ function showFlightResultsWithSummary(
     btn.addEventListener("click", function () {
       const proceed = confirm("Proceed for booking?");
       if (proceed) {
-        alert("You choose to proceed with booking!");
-        // You can redirect or open booking page here if needed
+        // Redirect to booking confirmation page
+        window.location.href = "flightbooking.html";
       }
     });
   });
