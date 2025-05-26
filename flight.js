@@ -99,6 +99,7 @@ function showFlightResultsWithSummary(
         ? cabinClass[0].toUpperCase() + cabinClass.slice(1).replace("_", " ")
         : "-"
     }
+    &nbsp;<b>Adults:</b> ${adults} &nbsp; <b>Children:</b> ${children}
   </div>
 `;
 
@@ -165,7 +166,14 @@ function showFlightResultsWithSummary(
 }
 
 // Static flight data (from your screenshot)
-function getStaticFlightResults(from, to, journeyType, cabinClass) {
+function getStaticFlightResults(
+  from,
+  to,
+  journeyType,
+  cabinClass,
+  adults,
+  children
+) {
   // Example static flights
   const flights = [
     {
@@ -180,7 +188,7 @@ function getStaticFlightResults(from, to, journeyType, cabinClass) {
       duration: "2h 15m",
       stops: 0,
       fareType: "Eco Value fare: personal item, carry-on bag, checked bag",
-      price: getFare(from, to, cabinClass),
+      price: getFare(from, to, cabinClass, adults, children),
     },
     {
       airlineLogoUrl:
@@ -194,7 +202,7 @@ function getStaticFlightResults(from, to, journeyType, cabinClass) {
       duration: "2h 15m",
       stops: 0,
       fareType: "Eco Value fare: personal item, carry-on bag, checked bag",
-      price: getFare(from, to, cabinClass),
+      price: getFare(from, to, cabinClass, adults, children),
     },
     {
       airlineLogoUrl:
@@ -208,7 +216,7 @@ function getStaticFlightResults(from, to, journeyType, cabinClass) {
       duration: "2h 15m",
       stops: 0,
       fareType: "Eco Value fare: personal item, carry-on bag, checked bag",
-      price: getFare(from, to, cabinClass),
+      price: getFare(from, to, cabinClass, adults, children),
     },
   ];
 
@@ -227,7 +235,7 @@ function getStaticFlightResults(from, to, journeyType, cabinClass) {
         duration: "2h 15m",
         stops: 0,
         fareType: "Eco Value fare: personal item, carry-on bag, checked bag",
-        price: getFare(from, to, cabinClass),
+        price: getFare(from, to, cabinClass, adults, children),
       },
       {
         airlineLogoUrl:
@@ -241,7 +249,7 @@ function getStaticFlightResults(from, to, journeyType, cabinClass) {
         duration: "2h 15m",
         stops: 0,
         fareType: "Eco Value fare: personal item, carry-on bag, checked bag",
-        price: getFare(from, to, cabinClass),
+        price: getFare(from, to, cabinClass, adults, children),
       },
       {
         airlineLogoUrl:
@@ -255,7 +263,7 @@ function getStaticFlightResults(from, to, journeyType, cabinClass) {
         duration: "2h 15m",
         stops: 0,
         fareType: "Eco Value fare: personal item, carry-on bag, checked bag",
-        price: getFare(from, to, cabinClass),
+        price: getFare(from, to, cabinClass, adults, children),
       },
     ];
 
@@ -292,7 +300,10 @@ function getFare(from, to, cabinClass) {
   else if (cabinClass === "business") multiplier = 2.5;
   else if (cabinClass === "first") multiplier = 4;
 
-  return Math.round(baseFare * multiplier);
+  // Fare calculation: adults full price, children 60% price
+  const adultFare = Math.round(baseFare * multiplier) * adults;
+  const childFare = Math.round(baseFare * multiplier * 0.6) * children;
+  return adultFare + childFare;
 }
 // On form submit: fetch user input, show static results and summary
 document
@@ -306,6 +317,10 @@ document
     const returnDate = document.getElementById("return").value;
     const cabinClass = document.getElementById("cabinClass").value;
     const journeyType = document.getElementById("journeyType").value;
+    const adults = parseInt(document.getElementById("adults").value, 10) || 1;
+    const children =
+      parseInt(document.getElementById("children").value, 10) || 0;
+
     // Optionally validate input
     if (!from || !to || !departure) {
       alert("Please fill in all required fields.");
@@ -322,7 +337,23 @@ document
 
     // Show static results with user input summary
     showFlightResultsWithSummary(
-      { from, to, departure, returnDate, cabinClass, journeyType },
-      getStaticFlightResults(from, to, journeyType, cabinClass)
+      {
+        from,
+        to,
+        departure,
+        returnDate,
+        cabinClass,
+        journeyType,
+        adults,
+        children,
+      },
+      getStaticFlightResults(
+        from,
+        to,
+        journeyType,
+        cabinClass,
+        adults,
+        children
+      )
     );
   });
