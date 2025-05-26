@@ -291,7 +291,7 @@ function getStaticFlightResults(
   return flights;
 }
 
-function getFare(from, to, cabinClass) {
+function getFare(from, to, cabinClass, adults = 1, children = 0) {
   let baseFare = 9000;
   if ((from === "DEL" && to === "BOM") || (from === "BOM" && to === "DEL")) {
     baseFare = 9645;
