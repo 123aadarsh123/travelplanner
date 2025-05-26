@@ -66,11 +66,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // Utility: Format money
 function formatINR(amount) {
-  return '₹' + amount.toLocaleString('en-IN');
+  return "₹" + amount.toLocaleString("en-IN");
 }
 
 // Function to render user summary and result cards
-function showFlightResultsWithSummary({from, to, departure, returnDate, cabinClass}, flights) {
+function showFlightResultsWithSummary(
+  { from, to, departure, returnDate, cabinClass },
+  flights
+) {
   const resultsDiv = document.getElementById("flight-results");
 
   // Map airport codes to names for display
@@ -79,12 +82,8 @@ function showFlightResultsWithSummary({from, to, departure, returnDate, cabinCla
     BOM: "Mumbai (BOM)",
     BLR: "Bangalore (BLR)",
     MAA: "Chennai (MAA)",
-    CCU: "Kolkata (CCU)"
+    CCU: "Kolkata (CCU)",
   };
-  showFlightResultsWithSummary(
-  { from, to, departure, returnDate, cabinClass, tripType },
-  getStaticFlightResults()
-);
 
   let summaryHtml = `
   <div class="booking-search-summary" style="background:#f7fafc;border-radius:12px;padding:18px 22px;margin-bottom:24px;">
@@ -93,43 +92,56 @@ function showFlightResultsWithSummary({from, to, departure, returnDate, cabinCla
     <b>To:</b> ${airportNames[to] || to || "-"} &nbsp; 
     <b>Departure:</b> ${departure || "-"}
     ${returnDate ? `&nbsp; <b>Return:</b> ${returnDate}` : ""}
-    &nbsp; <b>Cabin Class:</b> ${cabinClass ? cabinClass[0].toUpperCase() + cabinClass.slice(1).replace("_", " ") : "-"}
+    &nbsp; <b>Cabin Class:</b> ${
+      cabinClass
+        ? cabinClass[0].toUpperCase() + cabinClass.slice(1).replace("_", " ")
+        : "-"
+    }
   </div>
 `;
 
   if (!flights || flights.length === 0) {
-    resultsDiv.innerHTML = summaryHtml + "<p>No flights found for your selection.</p>";
+    resultsDiv.innerHTML =
+      summaryHtml + "<p>No flights found for your selection.</p>";
     return;
   }
 
   let html = `<div class="bookingcom-style-results">`;
-  flights.forEach(f => {
+  flights.forEach((f) => {
     html += `
       <div class="flight-card">
         <div class="flight-card-main">
           <div class="flight-airline-logo">
-            <img src="${f.airlineLogoUrl || 'flight-icon.jpg'}" alt="${f.airlineName || 'Airline'}" style="width:40px;height:40px;border-radius:8px;">
+            <img src="${f.airlineLogoUrl || "flight-icon.jpg"}" alt="${
+      f.airlineName || "Airline"
+    }" style="width:40px;height:40px;border-radius:8px;">
           </div>
           <div class="flight-times">
             <div>
-              <strong>${f.departureTime || ''}</strong>
-              <span class="flight-airport-code">${f.departureAirportCode || ''}</span>
+              <strong>${f.departureTime || ""}</strong>
+              <span class="flight-airport-code">${
+                f.departureAirportCode || ""
+              }</span>
             </div>
             <div class="flight-duration">
-              <span class="direct-badge">${f.stops === 0 ? 'Direct' : f.stops + ' stop'}</span>
-              <span>${f.duration || ''}</span>
+              <span class="direct-badge">${
+                f.stops === 0 ? "Direct" : f.stops + " stop"
+              }</span>
+              <span>${f.duration || ""}</span>
             </div>
             <div>
-              <strong>${f.arrivalTime || ''}</strong>
-              <span class="flight-airport-code">${f.arrivalAirportCode || ''}</span>
+              <strong>${f.arrivalTime || ""}</strong>
+              <span class="flight-airport-code">${
+                f.arrivalAirportCode || ""
+              }</span>
             </div>
           </div>
           <div class="flight-details">
-            <div class="flight-airline-name">${f.airlineName || ''}</div>
-            <div class="flight-number">${f.flightNumber || ''}</div>
+            <div class="flight-airline-name">${f.airlineName || ""}</div>
+            <div class="flight-number">${f.flightNumber || ""}</div>
           </div>
           <div class="flight-fare-box">
-            <div class="flight-fare-label">${f.fareType || ''}</div>
+            <div class="flight-fare-label">${f.fareType || ""}</div>
             <div class="flight-fare-amount">${formatINR(f.price)}</div>
             <button class="btn btn-primary btn-details">View details</button>
           </div>
@@ -145,7 +157,8 @@ function showFlightResultsWithSummary({from, to, departure, returnDate, cabinCla
 function getStaticFlightResults() {
   return [
     {
-      airlineLogoUrl: "https://upload.wikimedia.org/wikipedia/commons/3/3e/Air_India_Logo.svg",
+      airlineLogoUrl:
+        "https://upload.wikimedia.org/wikipedia/commons/3/3e/Air_India_Logo.svg",
       airlineName: "Air India",
       flightNumber: "",
       departureTime: "11:40 AM",
@@ -155,10 +168,11 @@ function getStaticFlightResults() {
       duration: "2h 15m",
       stops: 0,
       fareType: "Eco Value fare: personal item, carry-on bag, checked bag",
-      price: 9645
+      price: 9645,
     },
     {
-      airlineLogoUrl: "https://upload.wikimedia.org/wikipedia/commons/3/3e/Air_India_Logo.svg",
+      airlineLogoUrl:
+        "https://upload.wikimedia.org/wikipedia/commons/3/3e/Air_India_Logo.svg",
       airlineName: "Air India",
       flightNumber: "",
       departureTime: "2:40 PM",
@@ -168,35 +182,37 @@ function getStaticFlightResults() {
       duration: "2h 15m",
       stops: 0,
       fareType: "Eco Value fare: personal item, carry-on bag, checked bag",
-      price: 9645
-    }
+      price: 9645,
+    },
   ];
 }
 
 // On form submit: fetch user input, show static results and summary
-document.getElementById("flightForm").addEventListener("submit", function(event) {
-  event.preventDefault();
-const tripType = document.getElementById("tripType").value;
-  const from = document.getElementById("from").value.trim();
-  const to = document.getElementById("to").value.trim();
-  const departure = document.getElementById("departure").value;
-  const returnDate = document.getElementById("return").value;
-  const cabinClass = document.getElementById("cabinClass").value;
-  const resultsDiv = document.getElementById("flight-results");
+document
+  .getElementById("flightForm")
+  .addEventListener("submit", function (event) {
+    event.preventDefault();
+    const tripType = document.getElementById("tripType").value;
+    const from = document.getElementById("from").value.trim();
+    const to = document.getElementById("to").value.trim();
+    const departure = document.getElementById("departure").value;
+    const returnDate = document.getElementById("return").value;
+    const cabinClass = document.getElementById("cabinClass").value;
+    const resultsDiv = document.getElementById("flight-results");
 
-  // Optionally validate input
-  if (!from || !to || !departure) {
-    alert("Please fill in all required fields.");
-    return;
-  }
-  if (from === to) {
-    alert("Origin and destination cannot be the same.");
-    return;
-  }
+    // Optionally validate input
+    if (!from || !to || !departure) {
+      alert("Please fill in all required fields.");
+      return;
+    }
+    if (from === to) {
+      alert("Origin and destination cannot be the same.");
+      return;
+    }
 
-  // Show static results with user input summary
-  showFlightResultsWithSummary(
-    { from, to, departure, returnDate, cabinClass },
-    getStaticFlightResults()
-  );
-});
+    // Show static results with user input summary
+    showFlightResultsWithSummary(
+      { from, to, departure, returnDate, cabinClass },
+      getStaticFlightResults()
+    );
+  });
