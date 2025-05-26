@@ -51,8 +51,8 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // Handle trip type selection
-  const tripTypeInputs = document.getElementsByName("tripType");
-  tripTypeInputs.forEach((input) => {
+  const journeyTypeInputs = document.getElementsByName("journeyType");
+  journeyTypeInputs.forEach((input) => {
     input.addEventListener("change", (event) => {
       if (event.target.value === "round") {
         returnInput.removeAttribute("disabled");
@@ -71,7 +71,7 @@ function formatINR(amount) {
 
 // Function to render user summary and result cards
 function showFlightResultsWithSummary(
-  { from, to, departure, returnDate, cabinClass, tripType },
+  { from, to, departure, returnDate, cabinClass, journeyType },
   flights
 ) {
   const resultsDiv = document.getElementById("flight-results");
@@ -87,7 +87,7 @@ function showFlightResultsWithSummary(
 
   let summaryHtml = `
   <div class="booking-search-summary" style="background:#f7fafc;border-radius:12px;padding:18px 22px;margin-bottom:24px;">
-    <b>Trip Type:</b> ${tripType === "round" ? "Round Trip" : "One Way"} &nbsp; 
+    <b>Journey Type:</b> ${journeyType === "round" ? "Round Trip" : "One Way"} &nbsp; 
     <b>From:</b> ${airportNames[from] || from || "-"} &nbsp; 
     <b>To:</b> ${airportNames[to] || to || "-"} &nbsp; 
     <b>Departure:</b> ${departure || "-"}
@@ -192,7 +192,7 @@ document
   .getElementById("flightForm")
   .addEventListener("submit", function (event) {
     event.preventDefault();
-    const tripType = document.getElementById("tripType").value;
+    const journeyType = document.getElementById("journeyType").value;
     const from = document.getElementById("from").value.trim();
     const to = document.getElementById("to").value.trim();
     const departure = document.getElementById("departure").value;
@@ -212,7 +212,7 @@ document
 
     // Show static results with user input summary
 showFlightResultsWithSummary(
-  { from, to, departure, returnDate, cabinClass, tripType },
+  { from, to, departure, returnDate, cabinClass, journeyType },
   getStaticFlightResults()
 );
   });
