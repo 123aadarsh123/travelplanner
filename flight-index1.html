@@ -38,12 +38,12 @@
       </nav>
     </div>
     <div class="user-actions">
-            <button class="btn btn-primary rounded-circle d-flex align-items-center justify-content-center"
-                id="dashboard-initial" style="width: 60px;height:60px;font-size:3rem;padding:5px;"
-                onclick="window.location.href='after-login.html'">
-                D
-            </button>
-        </div>
+      <button class="btn btn-primary rounded-circle d-flex align-items-center justify-content-center"
+        id="dashboard-initial" style="width: 60px;height:60px;font-size:3rem;padding:5px;"
+        onclick="window.location.href='after-login.html'">
+        D
+      </button>
+    </div>
   </header>
 
   <!-- Hero Section -->
@@ -57,8 +57,8 @@
         <!-- Journey Type Selection -->
         <div class="form-group">
           <label for="journeyType">Journey Type:</label>
-          <select id="journeyType" name="journeyType" required onchange="toggleReturnDate()">
-            <option value="one-way" selected>One-Way</option>
+          <select id="journeyType" name="journeyType" required>
+            <option value="one-way" selected>One Way</option>
             <option value="round-trip">Round Trip</option>
           </select>
         </div>
@@ -68,10 +68,10 @@
           <select id="from" name="from" required>
             <option value="" disabled selected>Select Origin City</option>
             <option value="DEL">Delhi (DEL)</option>
-<option value="BOM">Mumbai (BOM)</option>
-<option value="BLR">Bangalore (BLR)</option>
-<option value="MAA">Chennai (MAA)</option>
-<option value="CCU">Kolkata (CCU)</option>
+            <option value="BOM">Mumbai (BOM)</option>
+            <option value="BLR">Bangalore (BLR)</option>
+            <option value="MAA">Chennai (MAA)</option>
+            <option value="CCU">Kolkata (CCU)</option>
           </select>
         </div>
 
@@ -80,10 +80,10 @@
           <select id="to" name="to" required>
             <option value="" disabled selected>Select Destination City</option>
             <option value="DEL">Delhi (DEL)</option>
-<option value="BOM">Mumbai (BOM)</option>
-<option value="BLR">Bangalore (BLR)</option>
-<option value="MAA">Chennai (MAA)</option>
-<option value="CCU">Kolkata (CCU)</option>
+            <option value="BOM">Mumbai (BOM)</option>
+            <option value="BLR">Bangalore (BLR)</option>
+            <option value="MAA">Chennai (MAA)</option>
+            <option value="CCU">Kolkata (CCU)</option>
           </select>
         </div>
 
@@ -108,14 +108,14 @@
           <input type="number" id="children" name="children" min="0" value="0">
         </div>
         <div class="form-group">
-  <label for="cabinClass">Cabin Class:</label>
-  <select id="cabinClass" name="cabinClass" required>
-    <option value="economy" selected>Economy</option>
-    <option value="premium_economy">Premium Economy</option>
-    <option value="business">Business</option>
-    <option value="first">First</option>
-  </select>
-</div>
+          <label for="cabinClass">Cabin Class:</label>
+          <select id="cabinClass" name="cabinClass" required>
+            <option value="economy" selected>Economy</option>
+            <option value="premium_economy">Premium Economy</option>
+            <option value="business">Business</option>
+            <option value="first">First</option>
+          </select>
+        </div>
 
         <div class="form-group action-group">
           <button type="submit" class="btn btn-primary">Search Flights</button>
@@ -124,7 +124,7 @@
       <div id="flight-results" style="margin-top:32px;"></div>
     </div>
   </section>
-<div id="flight-results"></div>
+  <div id="flight-results"></div>
   <!-- Footer -->
   <footer>
     <div class="footer-content">
