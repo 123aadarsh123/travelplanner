@@ -178,7 +178,10 @@ function showFlightResultsWithSummary(
     btn.addEventListener("click", function () {
       const proceed = confirm("Proceed for booking?");
       if (proceed) {
-        // Redirect to booking confirmation page
+        // Store selection for confirmation page
+        sessionStorage.setItem("bookingAdults", adults);
+        sessionStorage.setItem("bookingChildren", children);
+        // You can also store price, from, to, etc. if needed
         window.location.href = "flightbooking.html";
       }
     });
