@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flight Booking Confirmation</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #fafbfc;
+            margin: 0;
+        }
+
+        .progress-bar {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 32px 0 24px 0;
+        }
+
+        .progress-step {
+            color: #0071c2;
+            font-weight: 500;
+        }
+
+        .progress-sep {
+            margin: 0 12px;
+            color: #bbb;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px #0001;
+            padding: 32px 40px;
+        }
+
+        .flex-row {
+            display: flex;
+            gap: 40px;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 12px;
+        }
+
+        .subtitle {
+            color: #555;
+            margin-bottom: 24px;
+        }
+
+        .card {
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 24px;
+            background: #fafbfc;
+        }
+
+        .card-title {
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .bag-list {
+            margin: 0;
+            padding: 0 0 0 18px;
+            color: #444;
+        }
+
+        .price-details {
+            min-width: 260px;
+        }
+
+        .price-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .price-total {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #222;
+        }
+
+        .price-label {
+            color: #555;
+        }
+
+        .contact-section {
+            margin-top: 32px;
+        }
+
+        label {
+            font-weight: 500;
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        input[type="email"],
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #bbb;
+            border-radius: 6px;
+            margin-bottom: 18px;
+            font-size: 1rem;
+        }
+
+        .phone-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .flag {
+            width: 24px;
+            height: 18px;
+            border-radius: 3px;
+            border: 1px solid #ddd;
+        }
+
+        .btn-next {
+            background: #0071c2;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            padding: 12px 36px;
+            font-size: 1.1rem;
+            font-weight: 500;
+            cursor: pointer;
+            margin-top: 18px;
+        }
+
+        .btn-next:hover {
+            background: #005fa3;
+        }
+
+        .back-link {
+            color: #0071c2;
+            text-decoration: none;
+            font-weight: 500;
+            margin-right: 24px;
+        }
+
+        @media (max-width: 900px) {
+            .container {
+                padding: 18px 6vw;
+            }
+
+            .flex-row {
+                flex-direction: column;
+                gap: 0;
+            }
+
+            .price-details {
+                margin-top: 32px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Progress Bar -->
+    <div class="progress-bar">
+        <span class="progress-step">✔ Ticket type</span>
+        <span class="progress-sep">➔</span>
+        <span class="progress-step" style="color:#222;">2. Your details</span>
+        <span class="progress-sep">➔</span>
+        <span class="progress-step" style="color:#bbb;">3. Extras</span>
+        <span class="progress-sep">➔</span>
+        <span class="progress-step" style="color:#bbb;">4. Select your seat</span>
+        <span class="progress-sep">➔</span>
+        <span class="progress-step" style="color:#bbb;">5. Check and pay</span>
+    </div>
+
+    <div class="container">
+        <div style="color:#666; font-size:1rem; margin-bottom:8px;">
+            Round-trip &nbsp;•&nbsp; 1 traveler &nbsp;•&nbsp; Sat, Jun 28 - Sat, Jul 5
+        </div>
+        <div class="section-title" style="margin-bottom:18px;">New Delhi to Mumbai</div>
+
+        <div class="flex-row">
+            <!-- Traveler Details -->
+            <div style="flex:2;">
+                <div class="section-title" style="font-size:1.15rem; margin-bottom:8px;">Enter your details</div>
+                <div class="subtitle">Add traveler details and review baggage options</div>
+                <div class="card">
+                    <div class="card-title">👤 Adult 1</div>
+                    <button
+                        style="background:#fff;border:1px solid #0071c2;color:#0071c2;padding:8px 18px;border-radius:5px;font-weight:500;cursor:pointer;margin-bottom:14px;">Add
+                        this traveler's details</button>
+                    <ul class="bag-list">
+                        <li>1 personal item<br><span style="color:#007a1c;">Included</span><br><span
+                                style="font-size:0.95em;">Fits under the seat in front of you</span></li>
+                        <li style="margin-top:10px;">1 carry-on bag<br><span
+                                style="color:#007a1c;">Included</span><br><span style="font-size:0.95em;">20 x 40 x 55
+                                cm · 7 kg</span></li>
+                        <li style="margin-top:10px;">1 checked bag<br><span
+                                style="color:#007a1c;">Included</span><br><span style="font-size:0.95em;">15 kg</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Contact Details -->
+                <div class="contact-section">
+                    <div class="section-title" style="font-size:1.1rem; margin-bottom:10px;">Contact details</div>
+                    <form>
+                        <label for="contact-email">Contact email <span style="color:#d00;">*</span></label>
+                        <input type="email" id="contact-email" required placeholder="Enter your email">
+                        <div style="font-size:0.95em; color:#666; margin-bottom:12px;">We'll send your flight
+                            confirmation here</div>
+                        <label for="phone">Phone number <span style="color:#d00;">*</span></label>
+                        <div class="phone-row">
+                            <img src="https://flagcdn.com/in.svg" alt="IN" class="flag">
+                            <span>+91</span>
+                            <input type="text" id="phone" required placeholder="Enter phone number" style="flex:1;">
+                        </div>
+                        <div style="margin-top:28px;">
+                            <a href="#" class="back-link">&lt; Back</a>
+                            <button type="submit" class="btn-next">Next</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Price Details -->
+            <div class="price-details card" style="flex:1;">
+                <div class="section-title" style="font-size:1.1rem; margin-bottom:16px;">Price details</div>
+                <div class="price-row">
+                    <span class="price-label">Flight</span>
+                    <span>Adult (1)</span>
+                    <span>INR11,060.00</span>
+                </div>
+                <hr style="margin:14px 0;">
+                <div class="price-row" style="margin-bottom:0;">
+                    <span class="price-label" style="font-weight:600;">Total</span>
+                    <span class="price-total">INR11,060.00</span>
+                </div>
+                <div style="font-size:0.97em; color:#666; margin-top:10px;">
+                    Includes taxes and fees
+                </div>
+                <div style="margin-top:10px; color:#007a1c; font-size:0.97em;">
+                    ✓ No hidden fees – track your price at every step
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
