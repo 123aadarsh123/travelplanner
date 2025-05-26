@@ -310,6 +310,10 @@ document
       alert("Origin and destination cannot be the same.");
       return;
     }
+    if (journeyType === "round-trip" && !returnDate) {
+      alert("Please select a return date for round-trip.");
+      return;
+    }
 
     // Show static results with user input summary
     showFlightResultsWithSummary(
