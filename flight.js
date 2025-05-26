@@ -109,60 +109,84 @@ function showFlightResultsWithSummary(
   }
 
   let html = `<div class="bookingcom-style-results">`;
-  flights.forEach((f) => {
-    html += `
-      <div class="flight-card">
-        <div class="flight-card-main">
-          <div class="flight-airline-logo">
-            <img src="${f.airlineLogoUrl || "flight-icon.jpg"}" alt="${
-      f.airlineName || "Airline"
-    }" style="width:40px;height:40px;border-radius:8px;">
-          </div>
-          <div class="flight-times">
-            <div>
-              <strong>${f.departureTime || ""}</strong>
-              <span class="flight-airport-code">${
-                f.departureAirportCode || ""
-              }</span>
-            </div>
-            <div class="flight-duration">
-              <span class="direct-badge">${
-                f.stops === 0 ? "Direct" : f.stops + " stop"
-              }</span>
-              <span>${f.duration || ""}</span>
-            </div>
-            <div>
-              <strong>${f.arrivalTime || ""}</strong>
-              <span class="flight-airport-code">${
-                f.arrivalAirportCode || ""
-              }</span>
-            </div>
-          </div>
-          <div class="flight-details">
-            <div class="flight-airline-name">${f.airlineName || ""}</div>
-            <div class="flight-number">${f.flightNumber || ""}</div>
-          </div>
-          <div class="flight-fare-box">
-            <div class="flight-fare-label">${f.fareType || ""}</div>
-            <div class="flight-fare-amount">${formatINR(f.price)}</div>
-            <button class="btn btn-primary btn-details">View details</button>
-          </div>
+
+  if (journeyType === "round-trip") {
+    // flights is array of {outbound, inbound, totalPrice}
+    flights.forEach((pair) => {
+      html += `
+        <div class="flight-card">
+          <div><b>Outbound:</b></div>
+          <div class="flight-airline-name">${pair.outbound.airlineName} (${
+        pair.outbound.flightNumber
+      })</div>
+          <div>${pair.outbound.departureTime} ${
+        pair.outbound.departureAirportCode
+      } → ${pair.outbound.arrivalTime} ${pair.outbound.arrivalAirportCode}</div>
+          <div>${pair.outbound.fareType}</div>
+          <hr>
+          <div><b>Return:</b></div>
+          <div class="flight-airline-name">${pair.inbound.airlineName} (${
+        pair.inbound.flightNumber
+      })</div>
+          <div>${pair.inbound.departureTime} ${
+        pair.inbound.departureAirportCode
+      } → ${pair.inbound.arrivalTime} ${pair.inbound.arrivalAirportCode}</div>
+          <div>${pair.inbound.fareType}</div>
+          <div style="margin-top:10px;font-weight:bold;">Total Price: ${formatINR(
+            pair.totalPrice
+          )}</div>
+          <button class="btn btn-primary btn-details">View details</button>
         </div>
-      </div>
-    `;
-  });
+      `;
+    });
+  } else {
+    // One way: show all outbound flights
+    flights.forEach((f) => {
+      html += `
+        <div class="flight-card">
+          <div class="flight-airline-name">${f.airlineName} (${
+        f.flightNumber
+      })</div>
+          <div>${f.departureTime} ${f.departureAirportCode} → ${
+        f.arrivalTime
+      } ${f.arrivalAirportCode}</div>
+          <div>${f.fareType}</div>
+          <div style="margin-top:10px;font-weight:bold;">Price: ${formatINR(
+            f.price
+          )}</div>
+          <button class="btn btn-primary btn-details">View details</button>
+        </div>
+      `;
+    });
+  }
+
   html += `</div>`;
   resultsDiv.innerHTML = summaryHtml + html;
 }
 
 // Static flight data (from your screenshot)
-function getStaticFlightResults(from, to) {
-  return [
+function getStaticFlightResults(from, to, journeyType) {
+  // Example static flights
+  const flights = [
     {
       airlineLogoUrl:
         "https://upload.wikimedia.org/wikipedia/commons/3/3e/Air_India_Logo.svg",
       airlineName: "Air India",
-      flightNumber: "",
+      flightNumber: "AI-101",
+      departureTime: "08:00 AM",
+      departureAirportCode: from,
+      arrivalTime: "10:15 AM",
+      arrivalAirportCode: to,
+      duration: "2h 15m",
+      stops: 0,
+      fareType: "Eco Value fare: personal item, carry-on bag, checked bag",
+      price: getFare(from, to),
+    },
+    {
+      airlineLogoUrl:
+        "https://upload.wikimedia.org/wikipedia/commons/3/3e/Air_India_Logo.svg",
+      airlineName: "Air India",
+      flightNumber: "AI-202",
       departureTime: "11:40 AM",
       departureAirportCode: from,
       arrivalTime: "1:55 PM",
@@ -176,17 +200,79 @@ function getStaticFlightResults(from, to) {
       airlineLogoUrl:
         "https://upload.wikimedia.org/wikipedia/commons/3/3e/Air_India_Logo.svg",
       airlineName: "Air India",
-      flightNumber: "",
-      departureTime: "2:40 PM",
-      departureAirportCode: to,
-      arrivalTime: "4:55 PM",
-      arrivalAirportCode: from,
+      flightNumber: "AI-303",
+      departureTime: "4:00 PM",
+      departureAirportCode: from,
+      arrivalTime: "6:15 PM",
+      arrivalAirportCode: to,
       duration: "2h 15m",
       stops: 0,
       fareType: "Eco Value fare: personal item, carry-on bag, checked bag",
-      price: getFare(to, from),
+      price: getFare(from, to),
     },
   ];
+
+  // For round-trip, pair each outbound with a return flight
+  if (journeyType === "round-trip") {
+    const returnFlights = [
+      {
+        airlineLogoUrl:
+          "https://upload.wikimedia.org/wikipedia/commons/3/3e/Air_India_Logo.svg",
+        airlineName: "Air India",
+        flightNumber: "AI-104",
+        departureTime: "09:00 AM",
+        departureAirportCode: to,
+        arrivalTime: "11:15 AM",
+        arrivalAirportCode: from,
+        duration: "2h 15m",
+        stops: 0,
+        fareType: "Eco Value fare: personal item, carry-on bag, checked bag",
+        price: getFare(to, from),
+      },
+      {
+        airlineLogoUrl:
+          "https://upload.wikimedia.org/wikipedia/commons/3/3e/Air_India_Logo.svg",
+        airlineName: "Air India",
+        flightNumber: "AI-205",
+        departureTime: "2:40 PM",
+        departureAirportCode: to,
+        arrivalTime: "4:55 PM",
+        arrivalAirportCode: from,
+        duration: "2h 15m",
+        stops: 0,
+        fareType: "Eco Value fare: personal item, carry-on bag, checked bag",
+        price: getFare(to, from),
+      },
+      {
+        airlineLogoUrl:
+          "https://upload.wikimedia.org/wikipedia/commons/3/3e/Air_India_Logo.svg",
+        airlineName: "Air India",
+        flightNumber: "AI-306",
+        departureTime: "7:00 PM",
+        departureAirportCode: to,
+        arrivalTime: "9:15 PM",
+        arrivalAirportCode: from,
+        duration: "2h 15m",
+        stops: 0,
+        fareType: "Eco Value fare: personal item, carry-on bag, checked bag",
+        price: getFare(to, from),
+      },
+    ];
+
+    // Combine outbound and return flights as pairs
+    const combined = [];
+    for (let i = 0; i < flights.length; i++) {
+      combined.push({
+        outbound: flights[i],
+        inbound: returnFlights[i],
+        totalPrice: flights[i].price + returnFlights[i].price,
+      });
+    }
+    return combined;
+  }
+
+  // For one-way, just return outbound flights
+  return flights;
 }
 
 function getFare(from, to) {
@@ -228,6 +314,6 @@ document
     // Show static results with user input summary
     showFlightResultsWithSummary(
       { from, to, departure, returnDate, cabinClass, journeyType },
-      getStaticFlightResults(from, to)
+      getStaticFlightResults(from, to, journeyType)
     );
   });
