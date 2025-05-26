@@ -165,7 +165,7 @@ function showFlightResultsWithSummary(
 }
 
 // Static flight data (from your screenshot)
-function getStaticFlightResults(from, to, journeyType) {
+function getStaticFlightResults(from, to, journeyType, cabinClass) {
   // Example static flights
   const flights = [
     {
