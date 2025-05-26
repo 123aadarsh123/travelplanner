@@ -88,7 +88,7 @@ function showFlightResultsWithSummary(
   let summaryHtml = `
   <div class="booking-search-summary" style="background:#f7fafc;border-radius:12px;padding:18px 22px;margin-bottom:24px;">
     <b>Journey Type:</b> ${
-      journeyType === "round" ? "Round Trip" : "One Way"
+      journeyType === "round-trip" ? "Round Trip" : "One Way"
     } &nbsp; 
     <b>From:</b> ${airportNames[from] || from || "-"} &nbsp; 
     <b>To:</b> ${airportNames[to] || to || "-"} &nbsp; 
