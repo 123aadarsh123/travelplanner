@@ -384,6 +384,7 @@ document.querySelectorAll(".btn-details").forEach((btn) => {
   btn.addEventListener("click", function () {
     const proceed = confirm("Proceed for booking?");
     if (proceed) {
+      // Inside your "View details" button click handler in flight.js:
       sessionStorage.setItem("bookingAdults", adults);
       sessionStorage.setItem("bookingChildren", children);
       sessionStorage.setItem("bookingFrom", from);
