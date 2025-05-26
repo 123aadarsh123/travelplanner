@@ -54,7 +54,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const journeyTypeInputs = document.getElementsByName("journeyType");
   journeyTypeInputs.forEach((input) => {
     input.addEventListener("change", (event) => {
-      if (event.target.value === "round") {
+      if (event.target.value === "round-trip") {
+        // <-- yahan change karein
         returnInput.removeAttribute("disabled");
       } else {
         returnInput.setAttribute("disabled", "true");
