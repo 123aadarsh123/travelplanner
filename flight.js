@@ -71,7 +71,16 @@ function formatINR(amount) {
 
 // Function to render user summary and result cards
 function showFlightResultsWithSummary(
-  { from, to, departure, returnDate, cabinClass, journeyType },
+  {
+    from,
+    to,
+    departure,
+    returnDate,
+    cabinClass,
+    journeyType,
+    adults,
+    children,
+  },
   flights
 ) {
   const resultsDiv = document.getElementById("flight-results");
