@@ -331,7 +331,9 @@
             document.getElementById("total-row").innerHTML =
                 `<span>Total</span><span>INR${fare.toLocaleString(undefined, {minimumFractionDigits:2})}</span>`;
 
-
+            // Suppose your fare variable holds the correct ticket price for one adult
+            const actualTicketPrice = fare; // or whatever variable holds the correct price
+            sessionStorage.setItem("ticketBase", actualTicketPrice);
 
             // --- Seat Map Modal Logic ---
             let seatSelections = [{}, {}]; // For 2 segments
@@ -501,7 +503,7 @@
                             s)) {
                         alert(
                             "Please select a seat for every traveler on every segment before continuing."
-                            );
+                        );
                         return;
                     }
                 }
