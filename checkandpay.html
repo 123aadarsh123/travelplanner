@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Check and pay</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #fafbfc;
+            margin: 0;
+        }
+
+        .progress-bar {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5em;
+            margin: 32px 0 24px 0;
+            font-size: 1.1em;
+        }
+
+        .progress-step {
+            color: #0071c2;
+            font-weight: 500;
+        }
+
+        .progress-step.done {
+            color: #007a1c;
+        }
+
+        .progress-step.current {
+            color: #005fa3;
+            font-weight: 700;
+        }
+
+        .progress-sep {
+            color: #bbb;
+            margin: 0 8px;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .section-title {
+            font-size: 1.6em;
+            font-weight: 600;
+            margin-bottom: 18px;
+        }
+
+        .card {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 2px 16px #0001;
+            padding: 24px 28px 18px 28px;
+            margin-bottom: 18px;
+        }
+
+        .flex-row {
+            display: flex;
+            gap: 32px;
+        }
+
+        .price-details {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 2px 16px #0001;
+            padding: 28px 28px 18px 28px;
+            flex: 1;
+            min-width: 320px;
+        }
+
+        .price-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .total-row {
+            font-size: 1.3em;
+            font-weight: 700;
+            margin: 18px 0 8px 0;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .btn-row {
+            display: flex;
+            justify-content: flex-end;
+            gap: 18px;
+            margin-top: 32px;
+        }
+
+        .btn {
+            border: none;
+            border-radius: 7px;
+            padding: 10px 32px;
+            font-size: 1.1em;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .btn-back {
+            background: #fff;
+            color: #0071c2;
+            border: 1px solid #0071c2;
+        }
+
+        .btn-pay {
+            background: #0071c2;
+            color: #fff;
+        }
+
+        .flight-summary {
+            display: flex;
+            gap: 18px;
+            align-items: flex-start;
+            margin-bottom: 18px;
+        }
+
+        .flight-img {
+            width: 48px;
+            height: 48px;
+            background: #f2f2f2;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2em;
+            color: #0071c2;
+        }
+
+        .flight-info {
+            flex: 1;
+        }
+
+        .flight-title {
+            font-weight: 600;
+        }
+
+        .flight-details {
+            color: #666;
+            font-size: 0.98em;
+        }
+
+        .section-label {
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .input-row {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 12px;
+        }
+
+        .input-col {
+            flex: 1;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #bbb;
+            border-radius: 6px;
+            font-size: 1em;
+        }
+
+        .small {
+            font-size: 0.97em;
+            color: #666;
+        }
+
+        .bag-list {
+            margin: 0 0 0 18px;
+            padding: 0;
+            font-size: 0.98em;
+        }
+
+        .bag-list li {
+            margin-bottom: 6px;
+        }
+
+        .seat-list {
+            margin: 0 0 0 18px;
+            padding: 0;
+            font-size: 0.98em;
+        }
+
+        .seat-list li {
+            margin-bottom: 6px;
+        }
+
+        @media (max-width: 900px) {
+            .flex-row {
+                flex-direction: column;
+                gap: 0;
+            }
+
+            .main-card,
+            .price-details {
+                min-width: 0;
+                width: 100%;
+                margin-bottom: 18px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="progress-bar">
+        <span class="progress-step done">Choose your fare</span>
+        <span class="progress-sep">─────────────</span>
+        <span class="progress-step done">Your details</span>
+        <span class="progress-sep">─────────────</span>
+        <span class="progress-step done">Extras</span>
+        <span class="progress-sep">─────────────</span>
+        <span class="progress-step done">Select your seat</span>
+        <span class="progress-sep">─────────────</span>
+        <span class="progress-step current">Check and pay</span>
+    </div>
+    <div class="container">
+        <div id="trip-summary" class="small" style="margin-bottom:8px;"></div>
+        <div class="section-title" id="route-title"></div>
+        <div class="card" id="checkpay-main">
+            <!-- Flight segments will be injected here -->
+        </div>
+        <div class="card">
+            <div class="section-label">Contact details</div>
+            <div id="contact-details"></div>
+        </div>
+        <div class="card">
+            <div class="section-label">Traveler details</div>
+            <div id="traveler-details"></div>
+        </div>
+        <div class="card">
+            <div class="section-label">Baggage</div>
+            <div id="baggage-details"></div>
+        </div>
+        <div class="card">
+            <div class="section-label">Seats</div>
+            <div id="seat-details"></div>
+        </div>
+        <div class="card">
+            <div class="section-label">Your payment</div>
+            <div class="small" style="margin-bottom:10px;">Simple, quick, and secure.</div>
+            <form id="payment-form">
+                <div class="input-row">
+                    <div class="input-col">
+                        <label>Cardholder name</label>
+                        <input type="text" required placeholder="Enter cardholder name" title="Cardholder name">
+                    </div>
+                    <div class="input-col">
+                        <label>Card number</label>
+                        <input type="text" maxlength="19" required placeholder="Enter card number"
+                            title="Credit card number">
+                    </div>
+                </div>
+                <div class="input-row">
+                    <div class="input-col">
+                        <label>Expiration date</label>
+                        <div style="display:flex;gap:8px;">
+                            <select required title="Expiration month" style="width:60%">
+                                <option value="">Month</option>
+                                <option value="01">01</option>
+                                <option value="02">02</option>
+                                <option value="03">03</option>
+                                <option value="04">04</option>
+                                <option value="05">05</option>
+                                <option value="06">06</option>
+                                <option value="07">07</option>
+                                <option value="08">08</option>
+                                <option value="09">09</option>
+                                <option value="10">10</option>
+                                <option value="11">11</option>
+                                <option value="12">12</option>
+                            </select>
+                            <select required title="Expiration year" style="width:40%">
+                                <option value="">Year</option>
+                                <option value="2024">2024</option>
+                                <option value="2025">2025</option>
+                                <option value="2026">2026</option>
+                                <option value="2027">2027</option>
+                                <option value="2028">2028</option>
+                                <option value="2029">2029</option>
+                                <option value="2030">2030</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="input-col">
+                        <label>CVC</label>
+                        <input type="text" maxlength="4" required title="CVC" placeholder="CVC">
+                    </div>
+                </div>
+                <div style="display:flex;justify-content:flex-end;margin-top:18px;">
+                    <button type="submit" class="btn btn-pay">Pay now</button>
+                </div>
+            </form>
+        </div>
+        <div class="btn-row">
+            <button class="btn btn-back" onclick="window.history.back()">&lt; Back</button>
+        </div>
+        <div class="card small" style="margin-top:18px;">
+            By clicking "Pay now" you accept our <a href="#">terms and conditions</a>.
+        </div>
+    </div>
+    <script>
+        // --- Dynamic Data ---
+        const airportNames = {
+            DEL: "New Delhi",
+            BOM: "Mumbai",
+            BLR: "Bangalore",
+            MAA: "Chennai",
+            CCU: "Kolkata",
+        };
+
+        function formatDate(dateStr) {
+            if (!dateStr) return "-";
+            const d = new Date(dateStr);
+            if (isNaN(d)) return dateStr;
+            return d.toLocaleDateString("en-US", {
+                weekday: "short",
+                month: "short",
+                day: "numeric",
+            });
+        }
+        // Fetch booking/session data
+        const from = sessionStorage.getItem("bookingFrom") || "DEL";
+        const to = sessionStorage.getItem("bookingTo") || "BOM";
+        const journeyType = sessionStorage.getItem("bookingJourneyType") || "round-trip";
+        const departure = sessionStorage.getItem("bookingDeparture") || "";
+        const returnDate = sessionStorage.getItem("bookingReturn") || "";
+        const fare = parseFloat(sessionStorage.getItem("bookingFare") || "0");
+        const adults = parseInt(sessionStorage.getItem("bookingAdults") || "1", 10);
+        const children = parseInt(sessionStorage.getItem("bookingChildren") || "0", 10);
+        const travelerCount = adults + children;
+        // Example: get traveler names/genders from sessionStorage (customize as needed)
+        let travelers = [];
+        for (let i = 0; i < travelerCount; i++) {
+            travelers.push({
+                name: sessionStorage.getItem(`traveler${i}_name`) || `Traveler ${i+1}`,
+                gender: sessionStorage.getItem(`traveler${i}_gender`) || "",
+            });
+        }
+        // Example: get contact email from sessionStorage
+        const contactEmail = sessionStorage.getItem("contactEmail") || "user@example.com";
+        // Example: get seat selections from sessionStorage (as JSON string)
+        let seatSelections = [];
+        try {
+            seatSelections = JSON.parse(sessionStorage.getItem("seatSelections") || "[]");
+        } catch {
+            seatSelections = [];
+        }
+        // --- Render dynamic content ---
+        // Trip summary
+        document.getElementById("trip-summary").innerHTML = `
+            ${journeyType === "round-trip" ? "Round-trip" : "One-way"}
+            &nbsp;•&nbsp; ${travelerCount} traveler${travelerCount > 1 ? "s" : ""}
+            &nbsp;•&nbsp; ${formatDate(departure)}${journeyType === "round-trip" && returnDate ? " - " + formatDate(returnDate) : ""}
+        `;
+        // Route title
+        document.getElementById("route-title").textContent =
+            `${airportNames[from] || from} to ${airportNames[to] || to}`;
+        // Flight segments
+        let mainHtml = '';
+
+        function flightSegmentHtml(segIdx, fromCode, toCode, depTime, arrTime, duration, date) {
+            return `
+            <div class="flight-summary">
+                <div class="flight-img">✈️</div>
+                <div class="flight-info">
+                    <div class="flight-title">${airportNames[fromCode] || fromCode} (${fromCode}) → ${airportNames[toCode] || toCode} (${toCode})</div>
+                    <div class="flight-details">${duration} · IndiGo<br>${formatDate(date)} · ${depTime} - ${arrTime}</div>
+                    <div class="small"><a href="#">View flight details</a></div>
+                </div>
+                <div style="text-align:right;min-width:120px;">
+                    <div class="small">Ticket #${segIdx+1}</div>
+                    <div style="font-weight:600;">INR${fare.toLocaleString(undefined, {minimumFractionDigits:2})}</div>
+                </div>
+            </div>
+            `;
+        }
+        // Example static times/durations (customize as needed)
+        mainHtml += flightSegmentHtml(0, from, to, "07:00", "09:10", "2h 10m", departure);
+        if (journeyType === "round-trip") {
+            mainHtml += flightSegmentHtml(1, to, from, "18:00", "19:55", "1h 55m", returnDate);
+        }
+        document.getElementById("checkpay-main").innerHTML = mainHtml;
+        // Contact details
+        document.getElementById("contact-details").textContent = contactEmail;
+        // Traveler details
+        document.getElementById("traveler-details").innerHTML = travelers.map(t =>
+            `${t.name}${t.gender ? " ("+t.gender+")" : ""}`).join("<br>");
+        // Baggage details (static example)
+        let bagHtml = '';
+        for (let seg = 0; seg < (journeyType === "round-trip" ? 2 : 1); seg++) {
+            bagHtml += `<div style="margin-bottom:10px;">
+                <div style="font-weight:500;">Flight ${seg+1} (${seg===0?(airportNames[from]||from)+' → '+(airportNames[to]||to):(airportNames[to]||to)+' → '+(airportNames[from]||from)})</div>
+                <ul class="bag-list">
+                    <li>1 personal item (Included)</li>
+                    <li>1 carry-on bag (Included, Max weight: 7 kg)</li>
+                    <li>1 checked bag (Included, Max weight: 15 kg)</li>
+                </ul>
+            </div>`;
+        }
+        document.getElementById("baggage-details").innerHTML = bagHtml;
+        // Seat details
+        let seatHtml = '';
+        for (let seg = 0; seg < (journeyType === "round-trip" ? 2 : 1); seg++) {
+            seatHtml += `<div style="margin-bottom:10px;">
+                <div style="font-weight:500;">Flight ${seg+1} to ${seg===0?(airportNames[to]||to):(airportNames[from]||from)}</div>
+                <ul class="seat-list">
+                    ${travelers.map((t, i) => `<li>${t.name}: ${seatSelections[seg] && seatSelections[seg][i] ? 'Seat ' + seatSelections[seg][i] : 'No seat selected'}</li>`).join("")}
+                </ul>
+            </div>`;
+        }
+        document.getElementById("seat-details").innerHTML = seatHtml;
+        // Payment form (demo only)
+        document.getElementById("payment-form").onsubmit = function (e) {
+            e.preventDefault();
+            alert("Payment successful! (Demo)");
+            // Optionally: clear sessionStorage or redirect
+        };
+    </script>
+</body>
+
+</html>
