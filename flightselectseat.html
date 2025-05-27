@@ -216,31 +216,20 @@
             <button class="btn btn-skip">Skip</button>
         </div>
     </div>
-    <!-- Seat Selection Modal -->
-    <div id="seat-modal"
+    <!-- Seat Map Modal -->
+    <div id="seatmap-modal"
         style="display:none;position:fixed;z-index:1000;left:0;top:0;width:100vw;height:100vh;background:rgba(0,0,0,0.18);align-items:center;justify-content:center;">
         <div
-            style="background:#fff;border-radius:12px;min-width:320px;max-width:95vw;padding:32px 28px 18px 28px;box-shadow:0 2px 16px #0002;position:relative;">
-            <span id="close-seat-modal"
+            style="background:#fff;border-radius:12px;min-width:600px;max-width:98vw;padding:32px 28px 18px 28px;box-shadow:0 2px 16px #0002;position:relative;">
+            <span id="close-seatmap-modal"
                 style="position:absolute;right:18px;top:12px;font-size:1.6rem;color:#888;cursor:pointer;">&times;</span>
-            <div style="font-weight:600;font-size:1.2em;margin-bottom:18px;" id="seat-modal-title">Select seat</div>
-            <form id="seat-form">
-                <label style="font-size:1em;">Choose your seat:</label>
-                <select id="seat-select"
-                    style="width:100%;padding:10px;border:1px solid #bbb;border-radius:6px;font-size:1rem;margin:16px 0 24px 0;">
-                    <option value="">-- Select --</option>
-                    <option value="1A">1A (Window)</option>
-                    <option value="1B">1B (Middle)</option>
-                    <option value="1C">1C (Aisle)</option>
-                    <option value="2A">2A (Window)</option>
-                    <option value="2B">2B (Middle)</option>
-                    <option value="2C">2C (Aisle)</option>
-                </select>
-                <div style="display:flex;justify-content:flex-end;">
-                    <button type="button" id="seat-done-btn"
-                        style="background:#0071c2;color:#fff;border:none;border-radius:7px;padding:10px 32px;font-size:1.1em;font-weight:500;cursor:pointer;">Done</button>
-                </div>
-            </form>
+            <div style="font-weight:600;font-size:1.2em;margin-bottom:18px;" id="seatmap-modal-title">Select seats</div>
+            <div id="seatmap-travelers"></div>
+            <div id="seatmap-grid" style="margin:24px 0;"></div>
+            <div style="display:flex;justify-content:flex-end;">
+                <button type="button" id="seatmap-done-btn"
+                    style="background:#0071c2;color:#fff;border:none;border-radius:7px;padding:10px 32px;font-size:1.1em;font-weight:500;cursor:pointer;">Done</button>
+            </div>
         </div>
     </div>
 
@@ -316,37 +305,132 @@
 
 
 
-            let currentSegment = null;
+            // --- Seat Map Modal Logic ---
+            let seatSelections = [{}, {}]; // For 2 travelers, per segment
+            let currentSeatSegment = 0;
 
-            // Open modal on "Select seats" click
-            document.querySelectorAll('.select-seats-link').forEach((el, idx) => {
+            function renderSeatMap(travelers, selectedSeats) {
+                // Simple 6x6 grid: rows 1-6, seats A-F
+                const rows = 6,
+                    cols = 6;
+                const seatLetters = ['A', 'B', 'C', 'D', 'E', 'F'];
+                let html = '<table style="border-collapse:separate;border-spacing:6px 4px;margin:auto;">';
+                for (let r = 1; r <= rows; r++) {
+                    html += '<tr>';
+                    for (let c = 0; c < cols; c++) {
+                        const seatId = `${r}${seatLetters[c]}`;
+                        // Check if selected by any traveler
+                        let selectedBy = -1;
+                        for (let t = 0; t < travelers; t++) {
+                            if (selectedSeats[t] === seatId) selectedBy = t;
+                        }
+                        html += `<td>
+                <button class="seat-btn" data-seat="${seatId}" style="
+                    width:32px;height:32px;border-radius:6px;
+                    border:2px solid #0071c2;
+                    background:${selectedBy >= 0 ? '#0071c2' : '#fff'};
+                    color:${selectedBy >= 0 ? '#fff' : '#0071c2'};
+                    font-weight:600;cursor:pointer;
+                    margin:0 2px;
+                ">${seatLetters[c]}</button>
+                <div style="font-size:0.8em;text-align:center;color:#888;">${r}</div>
+            </td>`;
+                    }
+                    html += '</tr>';
+                }
+                html += '</table>';
+                return html;
+            }
+
+            function renderTravelerList(travelers, selectedSeats, currentTraveler) {
+                let html = '';
+                for (let t = 0; t < travelers; t++) {
+                    html += `<div style="margin-bottom:6px;">
+            <span style="font-weight:500;">Traveler ${t+1}:</span>
+            <span>${selectedSeats[t] ? 'Seat ' + selectedSeats[t] : '<span style="color:#888;">No seat selected</span>'}</span>
+            ${currentTraveler === t ? '<span style="color:#0071c2;font-weight:600;"> (selecting)</span>' : ''}
+        </div>`;
+                }
+                return html;
+            }
+
+            let seatmapTravelers = 2; // default, will be set dynamically
+            let seatmapCurrentTraveler = 0;
+            let seatmapSelectedSeats = [];
+
+            document.querySelectorAll('.select-seats-link').forEach((el, segIdx) => {
                 el.addEventListener('click', function () {
-                    currentSegment = idx;
-                    document.getElementById('seat-modal').style.display = 'flex';
-                    document.getElementById('seat-modal-title').textContent =
-                        idx === 0 ? 'Select seat for New Delhi - Mumbai' :
-                        'Select seat for Mumbai - New Delhi';
-                    document.getElementById('seat-select').value = "";
+                    // Set up for this segment
+                    currentSeatSegment = segIdx;
+                    seatmapTravelers = travelerCount;
+                    seatmapCurrentTraveler = 0;
+                    // Use a copy of previous selection or empty
+                    seatmapSelectedSeats = (seatSelections[segIdx] && seatSelections[segIdx]
+                            .slice) ? seatSelections[segIdx].slice() : Array(travelerCount)
+                        .fill("");
+                    // Modal title
+                    const fromName = airportNames[from] || from;
+                    const toName = airportNames[to] || to;
+                    document.getElementById('seatmap-modal-title').textContent =
+                        segIdx === 0 ? `Select seats for ${fromName} - ${toName}` :
+                        `Select seats for ${toName} - ${fromName}`;
+                    // Render
+                    document.getElementById('seatmap-travelers').innerHTML = renderTravelerList(
+                        seatmapTravelers, seatmapSelectedSeats, seatmapCurrentTraveler);
+                    document.getElementById('seatmap-grid').innerHTML = renderSeatMap(
+                        seatmapTravelers, seatmapSelectedSeats);
+                    document.getElementById('seatmap-modal').style.display = 'flex';
                 });
             });
 
+            // Seat click logic
+            document.getElementById('seatmap-grid').addEventListener('click', function (e) {
+                if (e.target.classList.contains('seat-btn')) {
+                    const seat = e.target.getAttribute('data-seat');
+                    // Prevent duplicate seat selection
+                    if (seatmapSelectedSeats.includes(seat)) return;
+                    seatmapSelectedSeats[seatmapCurrentTraveler] = seat;
+                    // Move to next traveler if any
+                    if (seatmapCurrentTraveler < seatmapTravelers - 1) {
+                        seatmapCurrentTraveler++;
+                    }
+                    // Re-render
+                    document.getElementById('seatmap-travelers').innerHTML = renderTravelerList(
+                        seatmapTravelers, seatmapSelectedSeats, seatmapCurrentTraveler);
+                    document.getElementById('seatmap-grid').innerHTML = renderSeatMap(seatmapTravelers,
+                        seatmapSelectedSeats);
+                }
+            });
+
+            // Traveler list click (to allow editing previous selection)
+            document.getElementById('seatmap-travelers').addEventListener('click', function (e) {
+                if (e.target.textContent.startsWith('Traveler')) {
+                    const idx = parseInt(e.target.textContent.replace('Traveler ', '')) - 1;
+                    if (!isNaN(idx)) {
+                        seatmapCurrentTraveler = idx;
+                        document.getElementById('seatmap-travelers').innerHTML = renderTravelerList(
+                            seatmapTravelers, seatmapSelectedSeats, seatmapCurrentTraveler);
+                        document.getElementById('seatmap-grid').innerHTML = renderSeatMap(
+                            seatmapTravelers, seatmapSelectedSeats);
+                    }
+                }
+            });
+
             // Close modal
-            document.getElementById('close-seat-modal').onclick = function () {
-                document.getElementById('seat-modal').style.display = 'none';
+            document.getElementById('close-seatmap-modal').onclick = function () {
+                document.getElementById('seatmap-modal').style.display = 'none';
             };
 
             // Done button
-            document.getElementById('seat-done-btn').onclick = function () {
-                const seat = document.getElementById('seat-select').value;
-                if (!seat) {
-                    alert('Please select a seat.');
-                    return;
-                }
-                // Update seat info in the main card
+            document.getElementById('seatmap-done-btn').onclick = function () {
+                // Save selection for this segment
+                seatSelections[currentSeatSegment] = seatmapSelectedSeats.slice();
+                // Update main card
                 const segments = document.querySelectorAll('.flight-segment');
-                const noSeats = segments[currentSegment].querySelector('.no-seats');
-                noSeats.textContent = 'Seat selected: ' + seat;
-                document.getElementById('seat-modal').style.display = 'none';
+                let seatText = seatmapSelectedSeats.map((s, i) =>
+                    `Traveler ${i+1}: ${s ? 'Seat ' + s : 'No seat selected'}`).join('<br>');
+                segments[currentSeatSegment].querySelector('.no-seats').innerHTML = seatText;
+                document.getElementById('seatmap-modal').style.display = 'none';
             };
         });
     </script>
