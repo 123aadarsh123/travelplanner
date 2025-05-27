@@ -224,191 +224,271 @@
         <span class="progress-sep">─────────────</span>
         <span class="progress-step current">Check and pay</span>
     </div>
-    <div class="container">
-        <div id="trip-summary" class="small" style="margin-bottom:8px;"></div>
-        <div class="section-title" id="route-title"></div>
-        <div class="card" id="checkpay-main">
-            <!-- Flight segments will be injected here -->
-        </div>
-        <div class="price-details" id="price-details">
-            <!-- Will be filled by JS -->
-        </div>
-        <div class="card">
-            <div class="section-label">Contact details</div>
-            <div id="contact-details"></div>
-        </div>
-        <div class="card">
-            <div class="section-label">Traveler details</div>
-            <div id="traveler-details"></div>
-        </div>
-        <div class="card">
-            <div class="section-label">Baggage</div>
-            <div id="baggage-details"></div>
-        </div>
-        <div class="card">
-            <div class="section-label">Seats</div>
-            <div id="seat-details"></div>
-        </div>
-        <div class="card">
-            <div class="section-label">Your payment</div>
-            <div class="small" style="margin-bottom:10px;">Simple, quick, and secure.</div>
-            <form id="payment-form">
-                <div class="input-row">
-                    <div class="input-col">
-                        <label>Cardholder name</label>
-                        <input type="text" required placeholder="Enter cardholder name" title="Cardholder name">
-                    </div>
-                    <div class="input-col">
-                        <label>Card number</label>
-                        <input type="text" maxlength="19" required placeholder="Enter card number"
-                            title="Credit card number">
-                    </div>
-                </div>
-                <div class="input-row">
-                    <div class="input-col">
-                        <label>Expiration date</label>
-                        <div style="display:flex;gap:8px;">
-                            <select required title="Expiration month" style="width:60%">
-                                <option value="">Month</option>
-                                <option value="01">01</option>
-                                <option value="02">02</option>
-                                <option value="03">03</option>
-                                <option value="04">04</option>
-                                <option value="05">05</option>
-                                <option value="06">06</option>
-                                <option value="07">07</option>
-                                <option value="08">08</option>
-                                <option value="09">09</option>
-                                <option value="10">10</option>
-                                <option value="11">11</option>
-                                <option value="12">12</option>
-                            </select>
-                            <select required title="Expiration year" style="width:40%">
-                                <option value="">Year</option>
-                                <option value="2024">2024</option>
-                                <option value="2025">2025</option>
-                                <option value="2026">2026</option>
-                                <option value="2027">2027</option>
-                                <option value="2028">2028</option>
-                                <option value="2029">2029</option>
-                                <option value="2030">2030</option>
-                            </select>
+    <div class="container" style="display:flex;gap:32px;align-items:flex-start;">
+        <div style="flex:2;min-width:0;">
+            <div id="trip-summary" class="small" style="margin-bottom:8px;"></div>
+            <div class="section-title" id="route-title"></div>
+            <div class="card" id="checkpay-main"></div>
+            <div class="card">
+                <div class="section-label">Contact details</div>
+                <div id="contact-details"></div>
+            </div>
+            <div class="card">
+                <div class="section-label">Traveler details</div>
+                <div id="traveler-details"></div>
+            </div>
+            <div class="card">
+                <div class="section-label">Baggage</div>
+                <div id="baggage-details"></div>
+            </div>
+            <div class="card">
+                <div class="section-label">Seats</div>
+                <div id="seat-details"></div>
+            </div>
+
+            <div class="card">
+                <div class="section-label">Your payment</div>
+                <div class="small" style="margin-bottom:10px;">Simple, quick, and secure.</div>
+                <form id="payment-form">
+                    <div class="input-row">
+                        <div class="input-col">
+                            <label>Cardholder name</label>
+                            <input type="text" required placeholder="Enter cardholder name" title="Cardholder name">
+                        </div>
+                        <div class="input-col">
+                            <label>Card number</label>
+                            <input type="text" maxlength="19" required placeholder="Enter card number"
+                                title="Credit card number">
                         </div>
                     </div>
-                    <div class="input-col">
-                        <label>CVC</label>
-                        <input type="text" maxlength="4" required title="CVC" placeholder="CVC">
+                    <div class="input-row">
+                        <div class="input-col">
+                            <label>Expiration date</label>
+                            <div style="display:flex;gap:8px;">
+                                <select required title="Expiration month" style="width:60%">
+                                    <option value="">Month</option>
+                                    <option value="01">01</option>
+                                    <option value="02">02</option>
+                                    <option value="03">03</option>
+                                    <option value="04">04</option>
+                                    <option value="05">05</option>
+                                    <option value="06">06</option>
+                                    <option value="07">07</option>
+                                    <option value="08">08</option>
+                                    <option value="09">09</option>
+                                    <option value="10">10</option>
+                                    <option value="11">11</option>
+                                    <option value="12">12</option>
+                                </select>
+                                <select required title="Expiration year" style="width:40%">
+                                    <option value="">Year</option>
+                                    <option value="2024">2024</option>
+                                    <option value="2025">2025</option>
+                                    <option value="2026">2026</option>
+                                    <option value="2027">2027</option>
+                                    <option value="2028">2028</option>
+                                    <option value="2029">2029</option>
+                                    <option value="2030">2030</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="input-col">
+                            <label>CVC</label>
+                            <input type="text" maxlength="4" required title="CVC" placeholder="CVC">
+                        </div>
                     </div>
-                </div>
-                <div style="display:flex;justify-content:flex-end;margin-top:18px;">
-                    <button type="submit" class="btn btn-pay">Pay now</button>
-                </div>
-            </form>
-        </div>
-        <div class="btn-row">
-            <button class="btn btn-back" onclick="window.history.back()">&lt; Back</button>
-        </div>
-        <div class="card small" style="margin-top:18px;">
-            By clicking "Pay now" you accept our <a href="#">terms and conditions</a>.
-        </div>
-    </div>
-    <script>
-        // --- Dynamic Data ---
-        const airportNames = {
-            DEL: "New Delhi",
-            BOM: "Mumbai",
-            BLR: "Bangalore",
-            MAA: "Chennai",
-            CCU: "Kolkata",
-        };
-
-        function formatDate(dateStr) {
-            if (!dateStr) return "-";
-            const d = new Date(dateStr);
-            if (isNaN(d)) return dateStr;
-            return d.toLocaleDateString("en-US", {
-                weekday: "short",
-                month: "short",
-                day: "numeric",
-            });
-        }
-        // Fetch booking/session data
-        const from = sessionStorage.getItem("bookingFrom") || "DEL";
-        const to = sessionStorage.getItem("bookingTo") || "BOM";
-        const journeyType = sessionStorage.getItem("bookingJourneyType") || "round-trip";
-        const departure = sessionStorage.getItem("bookingDeparture") || "";
-        const returnDate = sessionStorage.getItem("bookingReturn") || "";
-        const fare = parseFloat(sessionStorage.getItem("bookingFare") || "0");
-        const adults = parseInt(sessionStorage.getItem("bookingAdults") || "1", 10);
-        const children = parseInt(sessionStorage.getItem("bookingChildren") || "0", 10);
-        const contactPhone = sessionStorage.getItem("contactPhone") || "+91XXXXXXXXXX";
-        const contactEmail = sessionStorage.getItem("contactEmail") || "user@example.com";
-        document.getElementById("contact-details").innerHTML = `
-        ${contactPhone}<br>${contactEmail}
-    `;
-        const travelerCount = adults + children;
-        // --- Traveler Details ---
-        let travelerHtml = '';
-        for (let i = 0; i < travelerCount; i++) {
-            const name = sessionStorage.getItem(`traveler${i}_name`) || `Traveler ${i+1}`;
-            const type = sessionStorage.getItem(`traveler${i}_type`) || "Adult";
-            const gender = sessionStorage.getItem(`traveler${i}_gender`) || "";
-            travelerHtml += `
-            <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
-                <span style="font-size:1.3em;">&#128100;</span>
-                <span>
-                    <b>${name}</b><br>
-                    ${type}${gender ? " · " + gender.charAt(0).toUpperCase() + gender.slice(1) : ""}
-                </span>
+                    <div style="display:flex;justify-content:flex-end;margin-top:18px;">
+                        <button type="submit" class="btn btn-pay">Pay now</button>
+                    </div>
+                </form>
             </div>
-        `;
-        }
-        document.getElementById("traveler-details").innerHTML = travelerHtml;
-
-        // --- Price Details ---
-        // Example calculation
-        const flightFare = parseFloat(sessionStorage.getItem("flightFare") || "9263.00");
-        const taxes = parseFloat(sessionStorage.getItem("taxes") || "1898.00");
-        const seatFee = parseFloat(sessionStorage.getItem("seatFee") || "1700.24");
-        const ticketBase = parseFloat(sessionStorage.getItem("ticketBase") || "11161.00");
-        const total = ticketBase + flightFare + taxes + seatFee;
-
-        document.getElementById("price-details").innerHTML = `
-        <div style="font-weight:600;margin-bottom:12px;">Ticket (1 adult)</div>
-        <div class="price-row"><span>Ticket</span><span>INR${ticketBase.toLocaleString(undefined, {minimumFractionDigits:2})}</span></div>
-        <div class="price-row"><span>Flight fare</span><span>INR${flightFare.toLocaleString(undefined, {minimumFractionDigits:2})}</span></div>
-        <div class="price-row"><span>Taxes and fees</span><span>INR${taxes.toLocaleString(undefined, {minimumFractionDigits:2})}</span></div>
-        <div class="price-row"><span>Seat selection</span><span>INR${seatFee.toLocaleString(undefined, {minimumFractionDigits:2})}</span></div>
-        <div class="total-row"><span>Total</span><span>INR${total.toLocaleString(undefined, {minimumFractionDigits:2})}</span></div>
-        <div style="font-size:0.97em; color:#666; margin-top:10px;">Includes taxes and fees</div>
-        <div style="margin-top:10px; color:#007a1c; font-size:0.97em;">
-            ✓ No hidden fees – here’s what you’ll pay
+            <div class="btn-row">
+                <button class="btn btn-back" onclick="window.history.back()">&lt; Back</button>
+            </div>
+            <div class="card small" style="margin-top:18px;">
+                By clicking "Pay now" you accept our <a href="#">terms and conditions</a>.
+            </div>
         </div>
-        <div style="margin-top:8px;"><a href="#" style="color:#0071c2;">View price breakdown</a></div>
-    `;
+        <script>
+            // --- Dynamic Data ---
+            const airportNames = {
+                DEL: "New Delhi",
+                BOM: "Mumbai",
+                BLR: "Bangalore",
+                MAA: "Chennai",
+                CCU: "Kolkata",
+            };
 
-        // Example: get seat selections from sessionStorage (as JSON string)
-        let seatSelections = [];
-        try {
-            seatSelections = JSON.parse(sessionStorage.getItem("seatSelections") || "[]");
-        } catch {
-            seatSelections = [];
-        }
-        // --- Render dynamic content ---
-        // Trip summary
-        document.getElementById("trip-summary").innerHTML = `
+            function formatDate(dateStr) {
+                if (!dateStr) return "-";
+                const d = new Date(dateStr);
+                if (isNaN(d)) return dateStr;
+                return d.toLocaleDateString("en-US", {
+                    weekday: "short",
+                    month: "short",
+                    day: "numeric",
+                });
+            }
+
+            // Fetch booking/session data
+            const from = sessionStorage.getItem("bookingFrom") || "DEL";
+            const to = sessionStorage.getItem("bookingTo") || "BOM";
+            const journeyType = sessionStorage.getItem("bookingJourneyType") || "round-trip";
+            const departure = sessionStorage.getItem("bookingDeparture") || "";
+            const returnDate = sessionStorage.getItem("bookingReturn") || "";
+            const fare = parseFloat(sessionStorage.getItem("bookingFare") || "0");
+            const adults = parseInt(sessionStorage.getItem("bookingAdults") || "1", 10);
+            const children = parseInt(sessionStorage.getItem("bookingChildren") || "0", 10);
+            const travelerCount = adults + children;
+            const contactPhone = sessionStorage.getItem("contactPhone") || "+91XXXXXXXXXX";
+            const contactEmail = sessionStorage.getItem("contactEmail") || "user@example.com";
+
+            // Traveler details
+            let travelers = [];
+            for (let i = 0; i < travelerCount; i++) {
+                travelers.push({
+                    name: sessionStorage.getItem(`traveler${i}_name`) || `Traveler ${i+1}`,
+                    type: sessionStorage.getItem(`traveler${i}_type`) || "Adult",
+                    gender: sessionStorage.getItem(`traveler${i}_gender`) || ""
+                });
+            }
+
+            // Seat selections
+            try {
+                seatSelections = JSON.parse(sessionStorage.getItem("seatSelections") || "[]");
+            } catch {
+                seatSelections = [];
+            }
+
+            // --- Render dynamic content ---
+            // Trip summary
+            document.getElementById("trip-summary").innerHTML = `
             ${journeyType === "round-trip" ? "Round-trip" : "One-way"}
             &nbsp;•&nbsp; ${travelerCount} traveler${travelerCount > 1 ? "s" : ""}
             &nbsp;•&nbsp; ${formatDate(departure)}${journeyType === "round-trip" && returnDate ? " - " + formatDate(returnDate) : ""}
         `;
-        // Route title
-        document.getElementById("route-title").textContent =
-            `${airportNames[from] || from} to ${airportNames[to] || to}`;
-        // Flight segments
-        let mainHtml = '';
+            // Route title
+            document.getElementById("route-title").textContent =
+                `${airportNames[from] || from} to ${airportNames[to] || to}`;
 
-        function flightSegmentHtml(segIdx, fromCode, toCode, depTime, arrTime, duration, date) {
-            return `
+            // Flight segments
+            // let mainHtml = '';
+
+            function flightSegmentHtml(segIdx, fromCode, toCode, depTime, arrTime, duration, date) {
+                return `
+            <div class="flight-summary">
+                <div class="flight-img"><img src="https://img.icons8.com/ios-filled/50/airplane-take-off.png" alt="flight" style="width:48px;height:48px;border-radius:8px;background:#f2f2f2;"/></div>
+                <div class="flight-info">
+                    <div class="flight-title">${airportNames[fromCode] || fromCode} (${fromCode}) to ${airportNames[toCode] || toCode} (${toCode})</div>
+                    <div class="flight-details">${formatDate(date)} · ${depTime} - ${arrTime}<br>Direct · ${duration} · Economy</div>
+                    <div class="small" style="margin-top:2px;">Air India · AI${segIdx === 0 ? "2943" : "2986"}</div>
+                </div>
+                <div style="text-align:right;min-width:120px;">
+                    <a href="#" style="color:#0071c2;font-size:1em;">View flight details</a>
+                </div>
+            </div>
+            `;
+            }
+            mainHtml += flightSegmentHtml(0, from, to, "7:30 AM", "9:35 AM", "2h 05m", departure);
+            if (journeyType === "round-trip") {
+                mainHtml += flightSegmentHtml(1, to, from, "10:50 PM", "1:00 AM", "2h 10m", returnDate);
+            }
+            document.getElementById("checkpay-main").innerHTML = mainHtml;
+
+            // Contact details
+            document.getElementById("contact-details").innerHTML = `
+            ${contactPhone ? contactPhone + "<br>" : ""}${contactEmail}
+        `;
+
+            // Traveler details
+            let travelerHtml = '';
+            for (let i = 0; i < travelers.length; i++) {
+                travelerHtml += `
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+                    <span style="font-size:1.3em;">&#128100;</span>
+                    <span>
+                        <b>${travelers[i].name}</b><br>
+                        ${travelers[i].type}${travelers[i].gender ? " · " + travelers[i].gender.charAt(0).toUpperCase() + travelers[i].gender.slice(1) : ""}
+                    </span>
+                </div>
+            `;
+            }
+            document.getElementById("traveler-details").innerHTML = travelerHtml;
+
+            // Baggage details (static example)
+            bagHtml = '';
+            for (let seg = 0; seg < (journeyType === "round-trip" ? 2 : 1); seg++) {
+                bagHtml += `<div style="margin-bottom:10px;">
+                <div style="font-weight:500;">Flight to ${seg===0?(airportNames[to]||to):(airportNames[from]||from)}</div>
+                <ul class="bag-list">
+                    <li>1 personal item</li>
+                    <li>1 under the seat in front of you</li>
+                    <li>1 carry-on bag (Max weight: 7 kg)</li>
+                    <li>1 checked bag (Max weight: 15 kg)</li>
+                </ul>
+                <div class="small"><a href="#" style="color:#0071c2;">View baggage per traveler</a></div>
+            </div>`;
+            }
+            bagHtml +=
+                `<div class="small" style="margin-top:8px;">For more detailed baggage info and add options, check airline baggage policies.</div>`;
+            document.getElementById("baggage-details").innerHTML = bagHtml;
+
+            // Seat details
+            seatHtml = '';
+            for (let seg = 0; seg < (journeyType === "round-trip" ? 2 : 1); seg++) {
+                seatHtml += `<div style="margin-bottom:10px;">
+                <div style="font-weight:500;">Flight to ${seg===0?(airportNames[to]||to):(airportNames[from]||from)}</div>
+                <div style="margin-bottom:4px;">${(seatSelections[seg]||[]).filter(Boolean).length} seat${(seatSelections[seg]||[]).filter(Boolean).length!==1?'s':''} selected</div>
+                <div class="small"><a href="#" style="color:#0071c2;">View seat details</a></div>
+            </div>`;
+            }
+            document.getElementById("seat-details").innerHTML = seatHtml;
+
+            // --- Price Details ---
+            // Fetch or calculate price breakdown
+            // If you want to fetch from previous page, set these in sessionStorage before redirecting here
+            const ticketBase = parseFloat(sessionStorage.getItem("ticketBase") || "11161.00");
+            const flightFare = parseFloat(sessionStorage.getItem("flightFare") || "9263.00");
+            const taxes = parseFloat(sessionStorage.getItem("taxes") || "1898.00");
+            const seatFee = parseFloat(sessionStorage.getItem("seatFee") || "1700.24");
+            const total = ticketBase + flightFare + taxes + seatFee;
+
+            document.getElementById("price-details").innerHTML = `
+            <div style="font-weight:600;margin-bottom:12px;">Ticket (1 adult)</div>
+            <div class="price-row"><span>Ticket</span><span>INR${ticketBase.toLocaleString(undefined, {minimumFractionDigits:2})}</span></div>
+            <div class="price-row"><span>Flight fare</span><span>INR${flightFare.toLocaleString(undefined, {minimumFractionDigits:2})}</span></div>
+            <div class="price-row"><span>Taxes and fees</span><span>INR${taxes.toLocaleString(undefined, {minimumFractionDigits:2})}</span></div>
+            <div class="price-row"><span>Seat selection</span><span>INR${seatFee.toLocaleString(undefined, {minimumFractionDigits:2})}</span></div>
+            <div class="total-row"><span>Total</span><span>INR${total.toLocaleString(undefined, {minimumFractionDigits:2})}</span></div>
+            <div style="font-size:0.97em; color:#666; margin-top:10px;">Includes taxes and fees</div>
+            <div style="margin-top:10px; color:#007a1c; font-size:0.97em;">
+                ✓ No hidden fees – here’s what you’ll pay
+            </div>
+            <div style="margin-top:8px;"><a href="#" style="color:#0071c2;">View price breakdown</a></div>
+        `;
+
+            // Example: get seat selections from sessionStorage (as JSON string)
+            let seatSelections = [];
+            try {
+                seatSelections = JSON.parse(sessionStorage.getItem("seatSelections") || "[]");
+            } catch {
+                seatSelections = [];
+            }
+            // --- Render dynamic content ---
+            // Trip summary
+            document.getElementById("trip-summary").innerHTML = `
+            ${journeyType === "round-trip" ? "Round-trip" : "One-way"}
+            &nbsp;•&nbsp; ${travelerCount} traveler${travelerCount > 1 ? "s" : ""}
+            &nbsp;•&nbsp; ${formatDate(departure)}${journeyType === "round-trip" && returnDate ? " - " + formatDate(returnDate) : ""}
+        `;
+            // Route title
+            document.getElementById("route-title").textContent =
+                `${airportNames[from] || from} to ${airportNames[to] || to}`;
+            // Flight segments
+            let mainHtml = '';
+
+            function flightSegmentHtml(segIdx, fromCode, toCode, depTime, arrTime, duration, date) {
+                return `
             <div class="flight-summary">
                 <div class="flight-img">✈️</div>
                 <div class="flight-info">
@@ -422,22 +502,22 @@
                 </div>
             </div>
             `;
-        }
-        // Example static times/durations (customize as needed)
-        mainHtml += flightSegmentHtml(0, from, to, "07:00", "09:10", "2h 10m", departure);
-        if (journeyType === "round-trip") {
-            mainHtml += flightSegmentHtml(1, to, from, "18:00", "19:55", "1h 55m", returnDate);
-        }
-        document.getElementById("checkpay-main").innerHTML = mainHtml;
-        // Contact details
-        document.getElementById("contact-details").textContent = contactEmail;
-        // Traveler details
-        document.getElementById("traveler-details").innerHTML = travelers.map(t =>
-            `${t.name}${t.gender ? " ("+t.gender+")" : ""}`).join("<br>");
-        // Baggage details (static example)
-        let bagHtml = '';
-        for (let seg = 0; seg < (journeyType === "round-trip" ? 2 : 1); seg++) {
-            bagHtml += `<div style="margin-bottom:10px;">
+            }
+            // Example static times/durations (customize as needed)
+            mainHtml += flightSegmentHtml(0, from, to, "07:00", "09:10", "2h 10m", departure);
+            if (journeyType === "round-trip") {
+                mainHtml += flightSegmentHtml(1, to, from, "18:00", "19:55", "1h 55m", returnDate);
+            }
+            document.getElementById("checkpay-main").innerHTML = mainHtml;
+            // Contact details
+            document.getElementById("contact-details").textContent = contactEmail;
+            // Traveler details
+            document.getElementById("traveler-details").innerHTML = travelers.map(t =>
+                `${t.name}${t.gender ? " ("+t.gender+")" : ""}`).join("<br>");
+            // Baggage details (static example)
+            let bagHtml = '';
+            for (let seg = 0; seg < (journeyType === "round-trip" ? 2 : 1); seg++) {
+                bagHtml += `<div style="margin-bottom:10px;">
                 <div style="font-weight:500;">Flight ${seg+1} (${seg===0?(airportNames[from]||from)+' → '+(airportNames[to]||to):(airportNames[to]||to)+' → '+(airportNames[from]||from)})</div>
                 <ul class="bag-list">
                     <li>1 personal item (Included)</li>
@@ -445,26 +525,26 @@
                     <li>1 checked bag (Included, Max weight: 15 kg)</li>
                 </ul>
             </div>`;
-        }
-        document.getElementById("baggage-details").innerHTML = bagHtml;
-        // Seat details
-        let seatHtml = '';
-        for (let seg = 0; seg < (journeyType === "round-trip" ? 2 : 1); seg++) {
-            seatHtml += `<div style="margin-bottom:10px;">
+            }
+            document.getElementById("baggage-details").innerHTML = bagHtml;
+            // Seat details
+            let seatHtml = '';
+            for (let seg = 0; seg < (journeyType === "round-trip" ? 2 : 1); seg++) {
+                seatHtml += `<div style="margin-bottom:10px;">
                 <div style="font-weight:500;">Flight ${seg+1} to ${seg===0?(airportNames[to]||to):(airportNames[from]||from)}</div>
                 <ul class="seat-list">
                     ${travelers.map((t, i) => `<li>${t.name}: ${seatSelections[seg] && seatSelections[seg][i] ? 'Seat ' + seatSelections[seg][i] : 'No seat selected'}</li>`).join("")}
                 </ul>
             </div>`;
-        }
-        document.getElementById("seat-details").innerHTML = seatHtml;
-        // Payment form (demo only)
-        document.getElementById("payment-form").onsubmit = function (e) {
-            e.preventDefault();
-            alert("Payment successful! (Demo)");
-            // Optionally: clear sessionStorage or redirect
-        };
-    </script>
+            }
+            document.getElementById("seat-details").innerHTML = seatHtml;
+            // Payment form (demo only)
+            document.getElementById("payment-form").onsubmit = function (e) {
+                e.preventDefault();
+                alert("Payment successful! (Demo)");
+                // Optionally: clear sessionStorage or redirect
+            };
+        </script>
 </body>
 
 </html>
