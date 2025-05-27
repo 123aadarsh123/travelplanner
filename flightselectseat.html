@@ -284,10 +284,26 @@
             &nbsp;•&nbsp; ${travelerCount} traveler${travelerCount > 1 ? "s" : ""}
             &nbsp;•&nbsp; ${formatDate(departure)}${journeyType === "round-trip" && returnDate ? " - " + formatDate(returnDate) : ""}
             `;
+            // Dynamic segment titles
+            const fromName = airportNames[from] || from;
+            const toName = airportNames[to] || to;
 
             // Update route title
-            document.getElementById("route-title").textContent =
-                `${airportNames[from] || from} to ${airportNames[to] || to}`;
+            document.getElementById("route-title").textContent = `${fromName} to ${toName}`;
+
+            // Update flight segment titles/details
+            const segments = document.querySelectorAll('.flight-segment');
+            if (journeyType === "round-trip" && segments.length === 2) {
+                // Outbound
+                segments[0].querySelector('.flight-segment-title').textContent = `${fromName} - ${toName}`;
+                // Inbound
+                segments[1].querySelector('.flight-segment-title').textContent = `${toName} - ${fromName}`;
+            } else if (segments.length >= 1) {
+                // One-way
+                segments[0].querySelector('.flight-segment-title').textContent = `${fromName} - ${toName}`;
+                if (segments[1]) segments[1].style.display = "none";
+            }
+
 
             // Update price details
             document.getElementById("flight-travelers").textContent =
