@@ -93,4 +93,24 @@ window.addEventListener("DOMContentLoaded", function () {
   document.getElementById("total-price").textContent =
     "INR" + fare.toLocaleString(undefined, { minimumFractionDigits: 2 });
   document.getElementById("traveler-count").textContent = travelerCount;
+  // Open modal on "Add this traveler's details" click
+  document.body.addEventListener("click", function (e) {
+    if (e.target && e.target.matches("button, .btn, .btn-details")) {
+      if (e.target.textContent.includes("Add this traveler's details")) {
+        document.getElementById("traveler-modal").style.display = "flex";
+      }
+    }
+    if (e.target && e.target.id === "close-modal") {
+      document.getElementById("traveler-modal").style.display = "none";
+    }
+    if (e.target && e.target.id === "done-btn") {
+      document.getElementById("traveler-modal").style.display = "none";
+      // Optionally: validate and save traveler details here
+    }
+  });
+  // Optional: close modal on ESC key
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape")
+      document.getElementById("traveler-modal").style.display = "none";
+  });
 });
