@@ -148,7 +148,7 @@
             border: 1px solid #0071c2;
         }
 
-        .btn-skip {
+        .btn-next {
             background: #0071c2;
             color: #fff;
         }
@@ -213,7 +213,7 @@
         </div>
         <div class="btn-row">
             <button class="btn btn-back">&lt; Back</button>
-            <button class="btn btn-skip">Skip</button>
+            <button class="btn btn-next">Next</button>
         </div>
     </div>
     <!-- Seat Map Modal -->
@@ -482,6 +482,8 @@
             document.getElementById('seatmap-done-btn').onclick = function () {
                 // Save selection for this segment
                 seatSelections[currentSeatSegment] = seatmapSelectedSeats.slice();
+                // Save to sessionStorage for use on checkandpay.html
+                sessionStorage.setItem("seatSelections", JSON.stringify(seatSelections));
                 // Update main card
                 const segments = document.querySelectorAll('.flight-segment');
                 let seatText = seatmapSelectedSeats.map((s, i) =>
@@ -489,6 +491,23 @@
                 segments[currentSeatSegment].querySelector('.no-seats').innerHTML = seatText;
                 document.getElementById('seatmap-modal').style.display = 'none';
             };
+            // Prevent Next if not all seats are selected
+            document.querySelector('.btn-next').addEventListener('click', function (e) {
+                // Check for each segment (for round-trip: 2, one-way: 1)
+                const requiredSegments = journeyType === "round-trip" ? 2 : 1;
+                for (let seg = 0; seg < requiredSegments; seg++) {
+                    const seats = seatSelections[seg] || [];
+                    if (!Array.isArray(seats) || seats.length !== travelerCount || seats.some(s => !
+                            s)) {
+                        alert(
+                            "Please select a seat for every traveler on every segment before continuing."
+                            );
+                        return;
+                    }
+                }
+                // If all seats selected, go to next page
+                window.location.href = "checkandpay.html"; // Change to your next page
+            });
         });
     </script>
 </body>
