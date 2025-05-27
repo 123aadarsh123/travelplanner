@@ -83,23 +83,14 @@ window.addEventListener("DOMContentLoaded", function () {
   document.querySelector(".traveler-cards").innerHTML = cardsHtml;
 
   // Update price details (example static price, you can make dynamic)
-  const pricePerAdult = 11336.86;
-  const pricePerChild = 11336.86;
+  const fare = parseFloat(sessionStorage.getItem("bookingFare") || "0");
   let priceRows = "";
   if (adults > 0)
-    priceRows += `<div class="price-row"><span>Adult (${adults})</span><span>INR${(
-      pricePerAdult * adults
-    ).toLocaleString(undefined, { minimumFractionDigits: 2 })}</span></div>`;
+    priceRows += `<div class="price-row"><span>Adult (${adults})</span></div>`;
   if (children > 0)
-    priceRows += `<div class="price-row"><span>Child (${children})</span><span>INR${(
-      pricePerChild * children
-    ).toLocaleString(undefined, { minimumFractionDigits: 2 })}</span></div>`;
+    priceRows += `<div class="price-row"><span>Child (${children})</span></div>`;
   document.getElementById("price-breakdown").innerHTML = priceRows;
   document.getElementById("total-price").textContent =
-    "INR" +
-    (pricePerAdult * adults + pricePerChild * children).toLocaleString(
-      undefined,
-      { minimumFractionDigits: 2 }
-    );
+    "INR" + fare.toLocaleString(undefined, { minimumFractionDigits: 2 });
   document.getElementById("traveler-count").textContent = travelerCount;
 });
