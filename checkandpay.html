@@ -493,7 +493,8 @@
             document.getElementById("payment-form").onsubmit = function (e) {
                 e.preventDefault();
                 alert("Payment successful! (Demo)");
-                // Optionally: clear sessionStorage or redirect
+                // Redirect to boarding pass page
+                window.location.href = "boardingpass.html";
             };
         </script>
 </body>
