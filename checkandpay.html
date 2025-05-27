@@ -450,25 +450,31 @@
             // --- Price Details ---
             // Fetch or calculate price breakdown
             const ticketBase = parseFloat(sessionStorage.getItem("ticketBase") || "0");
-            const flightFare = parseFloat(sessionStorage.getItem("flightFare") || "9263.00");
-            const taxes = parseFloat(sessionStorage.getItem("taxes") || "1898.00");
-            const seatFee = parseFloat(sessionStorage.getItem("seatFee") || "1700.24");
-            const total = ticketBase + flightFare + taxes + seatFee;
+            // Calculate seat count (sum of all selected seats in all segments)
+            let seatCount = 0;
+            if (Array.isArray(seatSelections)) {
+                seatCount = seatSelections.reduce((sum, arr) => sum + (Array.isArray(arr) ? arr.filter(Boolean).length :
+                    0), 0);
+            }
+
+            const flightFare = ticketBase * 0.83;
+            const taxes = ticketBase * 0.17;
+            const seatFee = seatCount * 850;
+            const total = ticketBase + seatFee; // ticketBase already includes flightFare+taxes
 
             document.getElementById("price-details").innerHTML = `
-        <div style="font-weight:600;margin-bottom:12px;">Ticket (1 adult)</div>
-        <div class="price-row"><span>Ticket</span><span>INR${ticketBase.toLocaleString(undefined, {minimumFractionDigits:2})}</span></div>
-        <div class="price-row"><span>Flight fare</span><span>INR${flightFare.toLocaleString(undefined, {minimumFractionDigits:2})}</span></div>
-        <div class="price-row"><span>Taxes and fees</span><span>INR${taxes.toLocaleString(undefined, {minimumFractionDigits:2})}</span></div>
-        <div class="price-row"><span>Seat selection</span><span>INR${seatFee.toLocaleString(undefined, {minimumFractionDigits:2})}</span></div>
-        <div class="total-row"><span>Total</span><span>INR${total.toLocaleString(undefined, {minimumFractionDigits:2})}</span></div>
-        <div style="font-size:0.97em; color:#666; margin-top:10px;">Includes taxes and fees</div>
-        <div style="margin-top:10px; color:#007a1c; font-size:0.97em;">
-            ✓ No hidden fees – here’s what you’ll pay
-        </div>
-        <div style="margin-top:8px;"><a href="#" style="color:#0071c2;">View price breakdown</a></div>
-    `;
-
+    <div style="font-weight:600;margin-bottom:12px;">Ticket (1 adult)</div>
+    <div class="price-row"><span>Ticket</span><span>INR${ticketBase.toLocaleString(undefined, {minimumFractionDigits:2})}</span></div>
+    <div class="price-row"><span>Flight fare</span><span>INR${flightFare.toLocaleString(undefined, {minimumFractionDigits:2})}</span></div>
+    <div class="price-row"><span>Taxes and fees</span><span>INR${taxes.toLocaleString(undefined, {minimumFractionDigits:2})}</span></div>
+    <div class="price-row"><span>Seat selection</span><span>INR${seatFee.toLocaleString(undefined, {minimumFractionDigits:2})}</span></div>
+    <div class="total-row"><span>Total</span><span>INR${total.toLocaleString(undefined, {minimumFractionDigits:2})}</span></div>
+    <div style="font-size:0.97em; color:#666; margin-top:10px;">Includes taxes and fees</div>
+    <div style="margin-top:10px; color:#007a1c; font-size:0.97em;">
+        ✓ No hidden fees – here’s what you’ll pay
+    </div>
+    <div style="margin-top:8px;"><a href="#" style="color:#0071c2;">View price breakdown</a></div>
+`;
             // Payment form (demo only)
             document.getElementById("payment-form").onsubmit = function (e) {
                 e.preventDefault();
