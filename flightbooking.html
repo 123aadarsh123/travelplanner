@@ -310,11 +310,15 @@
                 </div>
                 <div style="margin-top:18px;">
                     <label>Gender specified on your travel document <span style="color:#d00;">*</span></label>
-                    <select required>
+                    <select required
+                        style="width:100%;padding:10px;border:1px solid #bbb;border-radius:6px;font-size:1rem;margin-bottom:4px;">
                         <option value="">Select your gender</option>
                         <option value="male">Male</option>
                         <option value="female">Female</option>
                     </select>
+                    <div style="font-size:0.95em;color:#666;margin-bottom:10px;">
+                        We're currently required by airlines and providers to ask for this information
+                    </div>
                 </div>
                 <div style="display:flex;justify-content:flex-end;margin-top:24px;">
                     <button type="button" id="done-btn" class="btn-next" style="width:80px;">Done</button>
