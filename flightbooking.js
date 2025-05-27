@@ -173,66 +173,60 @@ window.addEventListener("DOMContentLoaded", function () {
     if (e.key === "Escape")
       document.getElementById("traveler-modal").style.display = "none";
   });
-  document
-    .querySelector(".contact-section form")
-    .addEventListener("submit", function (e) {
-      e.preventDefault(); // Prevent actual form submission
-      window.location.href = "flightselectseat.html";
-    });
-});
-document.querySelector("form").addEventListener("submit", function (e) {
-  e.preventDefault();
+  document.querySelector("form").addEventListener("submit", function (e) {
+    e.preventDefault();
 
-  // Check contact email and phone
-  const email = document.getElementById("contact-email").value.trim();
-  const phone = document.getElementById("phone").value.trim();
-  if (!email || !phone) {
-    alert("Please fill in your contact email and phone number.");
-    return;
-  }
-
-  // Check all traveler cards for details
-  let allFilled = true;
-  document.querySelectorAll(".traveler-cards .card").forEach((card) => {
-    const firstName = card.querySelector(
-      'input[placeholder="Enter first name(s)"]'
-    );
-    const lastName = card.querySelector(
-      'input[placeholder="Enter last name(s)"]'
-    );
-    const gender = card.querySelector("select");
-    if (
-      !firstName ||
-      !lastName ||
-      !gender ||
-      !firstName.value.trim() ||
-      !lastName.value.trim() ||
-      !gender.value
-    ) {
-      allFilled = false;
+    // Check contact email and phone
+    const email = document.getElementById("contact-email").value.trim();
+    const phone = document.getElementById("phone").value.trim();
+    if (!email || !phone) {
+      alert("Please fill in your contact email and phone number.");
+      return;
     }
-  });
 
-  if (!allFilled) {
-    alert("Please fill in all traveler details.");
-    return;
-  }
+    // Check all traveler cards for details
+    let allFilled = true;
+    document.querySelectorAll(".traveler-cards .card").forEach((card) => {
+      const firstName = card.querySelector(
+        'input[placeholder="Enter first name(s)"]'
+      );
+      const lastName = card.querySelector(
+        'input[placeholder="Enter last name(s)"]'
+      );
+      const gender = card.querySelector("select");
+      if (
+        !firstName ||
+        !lastName ||
+        !gender ||
+        !firstName.value.trim() ||
+        !lastName.value.trim() ||
+        !gender.value
+      ) {
+        allFilled = false;
+      }
+    });
 
-  // If all checks pass, save to sessionStorage and go to next page
-  sessionStorage.setItem("contactEmail", email);
-  sessionStorage.setItem("contactPhone", phone);
+    if (!allFilled) {
+      alert("Please fill in all traveler details.");
+      return;
+    }
 
-  // Save traveler details (example for 2 travelers)
-  document.querySelectorAll(".traveler-cards .card").forEach((card, idx) => {
-    const firstName = card
-      .querySelector('input[placeholder="Enter first name(s)"]')
-      .value.trim();
-    const lastName = card
-      .querySelector('input[placeholder="Enter last name(s)"]')
-      .value.trim();
-    const gender = card.querySelector("select").value;
-    sessionStorage.setItem(`traveler${idx}_name`, firstName + " " + lastName);
-    sessionStorage.setItem(`traveler${idx}_type`, "Adult");
-    sessionStorage.setItem(`traveler${idx}_gender`, gender);
+    // If all checks pass, save to sessionStorage and go to next page
+    sessionStorage.setItem("contactEmail", email);
+    sessionStorage.setItem("contactPhone", phone);
+
+    // Save traveler details (example for 2 travelers)
+    document.querySelectorAll(".traveler-cards .card").forEach((card, idx) => {
+      const firstName = card
+        .querySelector('input[placeholder="Enter first name(s)"]')
+        .value.trim();
+      const lastName = card
+        .querySelector('input[placeholder="Enter last name(s)"]')
+        .value.trim();
+      const gender = card.querySelector("select").value;
+      sessionStorage.setItem(`traveler${idx}_name`, firstName + " " + lastName);
+      sessionStorage.setItem(`traveler${idx}_type`, "Adult");
+      sessionStorage.setItem(`traveler${idx}_gender`, gender);
+    });
   });
 });
