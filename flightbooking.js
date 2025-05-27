@@ -173,4 +173,10 @@ window.addEventListener("DOMContentLoaded", function () {
     if (e.key === "Escape")
       document.getElementById("traveler-modal").style.display = "none";
   });
+  document
+    .querySelector(".contact-section form")
+    .addEventListener("submit", function (e) {
+      e.preventDefault(); // Prevent actual form submission
+      window.location.href = "flightselectseat.html";
+    });
 });
