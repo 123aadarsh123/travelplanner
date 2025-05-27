@@ -160,6 +160,10 @@ window.addEventListener("DOMContentLoaded", function () {
         <li style="margin-top:10px;">1 carry-on bag<br><span style="color:#007a1c;">Included</span><br><span style="font-size:0.95em;">25 x 35 x 55 cm · 7 kg</span></li>
         <li style="margin-top:10px;">1 checked bag<br><span style="color:#007a1c;">Included</span><br><span style="font-size:0.95em;">15 kg</span></li>
       </ul>
+      card.classList.add("filled");
+  card.setAttribute("data-name", firstName + " " + lastName);
+  card.setAttribute("data-type", currentTravelerType === "child" ? "Child" : "Adult");
+  card.setAttribute("data-gender", gender.charAt(0).toUpperCase() + gender.slice(1));
     `;
       }
       document.getElementById("traveler-modal").style.display = "none";
@@ -184,24 +188,10 @@ window.addEventListener("DOMContentLoaded", function () {
       return;
     }
 
-    // Check all traveler cards for details
+    // Check all traveler cards for .filled class
     let allFilled = true;
     document.querySelectorAll(".traveler-cards .card").forEach((card) => {
-      const firstName = card.querySelector(
-        'input[placeholder="Enter first name(s)"]'
-      );
-      const lastName = card.querySelector(
-        'input[placeholder="Enter last name(s)"]'
-      );
-      const gender = card.querySelector("select");
-      if (
-        !firstName ||
-        !lastName ||
-        !gender ||
-        !firstName.value.trim() ||
-        !lastName.value.trim() ||
-        !gender.value
-      ) {
+      if (!card.classList.contains("filled")) {
         allFilled = false;
       }
     });
@@ -211,22 +201,22 @@ window.addEventListener("DOMContentLoaded", function () {
       return;
     }
 
-    // If all checks pass, save to sessionStorage and go to next page
+    // Save contact info
     sessionStorage.setItem("contactEmail", email);
     sessionStorage.setItem("contactPhone", phone);
 
-    // Save traveler details (example for 2 travelers)
+    // Save traveler details from filled cards
     document.querySelectorAll(".traveler-cards .card").forEach((card, idx) => {
-      const firstName = card
-        .querySelector('input[placeholder="Enter first name(s)"]')
-        .value.trim();
-      const lastName = card
-        .querySelector('input[placeholder="Enter last name(s)"]')
-        .value.trim();
-      const gender = card.querySelector("select").value;
-      sessionStorage.setItem(`traveler${idx}_name`, firstName + " " + lastName);
-      sessionStorage.setItem(`traveler${idx}_type`, "Adult");
+      // You should store the details in data attributes when filling the card
+      const name = card.getAttribute("data-name") || "";
+      const type = card.getAttribute("data-type") || "Adult";
+      const gender = card.getAttribute("data-gender") || "";
+      sessionStorage.setItem(`traveler${idx}_name`, name);
+      sessionStorage.setItem(`traveler${idx}_type`, type);
       sessionStorage.setItem(`traveler${idx}_gender`, gender);
     });
+
+    // Redirect to next page
+    window.location.href = "flightselectseat.html";
   });
 });
