@@ -143,25 +143,26 @@ window.addEventListener("DOMContentLoaded", function () {
       const card = document.querySelector(
         `.card[data-traveler-index="${currentTravelerIndex}"]`
       );
-      const icon = currentTravelerType === "child" ? "🧒" : "👤";
-      card.innerHTML = `
-        <div class="card-title" style="display:flex;align-items:center;gap:8px;">
-          <span>${icon}</span>
-          <span style="font-weight:600;">${firstName} ${lastName}</span>
-          <span style="color:#007a1c;font-size:1.3em;margin-left:auto;">&#10003;</span>
-        </div>
-        <div style="margin-bottom:8px;">${
-          gender.charAt(0).toUpperCase() + gender.slice(1)
-        }</div>
-        <button type="button" class="btn-edit-traveler" data-traveler-index="${currentTravelerIndex}" style="background:#fff;border:1px solid #0071c2;color:#0071c2;padding:8px 18px;border-radius:5px;font-weight:500;cursor:pointer;margin-bottom:14px;">Edit this traveler's details</button>
-        <ul class="bag-list">
-          <li>1 personal item<br><span style="color:#007a1c;">Included</span><br><span style="font-size:0.95em;">Fits under the seat in front of you</span></li>
-          <li style="margin-top:10px;">1 carry-on bag<br><span style="color:#007a1c;">Included</span><br><span style="font-size:0.95em;">25 x 35 x 55 cm · 7 kg</span></li>
-          <li style="margin-top:10px;">1 checked bag<br><span style="color:#007a1c;">Included</span><br><span style="font-size:0.95em;">15 kg</span></li>
-        </ul>
-      `;
+      if (card) {
+        const icon = currentTravelerType === "child" ? "🧒" : "👤";
+        card.innerHTML = `
+      <div class="card-title" style="display:flex;align-items:center;gap:8px;">
+        <span>${icon}</span>
+        <span style="font-weight:600;">${firstName} ${lastName}</span>
+        <span style="color:#007a1c;font-size:1.3em;margin-left:auto;">&#10003;</span>
+      </div>
+      <div style="margin-bottom:8px;">${
+        gender.charAt(0).toUpperCase() + gender.slice(1)
+      }</div>
+      <button type="button" class="btn-edit-traveler" data-traveler-index="${currentTravelerIndex}" style="background:#fff;border:1px solid #0071c2;color:#0071c2;padding:8px 18px;border-radius:5px;font-weight:500;cursor:pointer;margin-bottom:14px;">Edit this traveler's details</button>
+      <ul class="bag-list">
+        <li>1 personal item<br><span style="color:#007a1c;">Included</span><br><span style="font-size:0.95em;">Fits under the seat in front of you</span></li>
+        <li style="margin-top:10px;">1 carry-on bag<br><span style="color:#007a1c;">Included</span><br><span style="font-size:0.95em;">25 x 35 x 55 cm · 7 kg</span></li>
+        <li style="margin-top:10px;">1 checked bag<br><span style="color:#007a1c;">Included</span><br><span style="font-size:0.95em;">15 kg</span></li>
+      </ul>
+    `;
+      }
       document.getElementById("traveler-modal").style.display = "none";
-      // Optionally: clear form fields here
       form.reset();
       return;
     }
