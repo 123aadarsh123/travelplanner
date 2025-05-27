@@ -172,16 +172,34 @@ function showFlightResultsWithSummary(
 
   html += `</div>`;
   resultsDiv.innerHTML = summaryHtml + html;
-  // Add this block to handle "View details" button clicks
-  // Attach event listeners AFTER rendering the buttons
-  document.querySelectorAll(".btn-details").forEach((btn) => {
+  // ...existing code...
+  document.querySelectorAll(".btn-details").forEach((btn, idx) => {
     btn.addEventListener("click", function () {
       const proceed = confirm("Proceed for booking?");
       if (proceed) {
-        // Store selection for confirmation page
+        // For round-trip, get the correct pair; for one-way, get the correct flight
+        let selectedFlight, selectedReturnFlight, totalPrice;
+        if (journeyType === "round-trip") {
+          const pair = flights[idx];
+          selectedFlight = pair.outbound;
+          selectedReturnFlight = pair.inbound;
+          totalPrice = pair.totalPrice;
+        } else {
+          selectedFlight = flights[idx];
+          totalPrice = selectedFlight.price;
+        }
+
+        // Store all details for booking page
         sessionStorage.setItem("bookingAdults", adults);
         sessionStorage.setItem("bookingChildren", children);
-        // You can also store price, from, to, etc. if needed
+        sessionStorage.setItem("bookingFrom", from);
+        sessionStorage.setItem("bookingTo", to);
+        sessionStorage.setItem("bookingJourneyType", journeyType);
+        sessionStorage.setItem("bookingDeparture", departure);
+        sessionStorage.setItem("bookingReturn", returnDate || "");
+        sessionStorage.setItem("bookingFare", totalPrice);
+        // Optionally store flight numbers, times, etc.
+
         window.location.href = "flightbooking.html";
       }
     });
@@ -380,19 +398,3 @@ document
       )
     );
   });
-document.querySelectorAll(".btn-details").forEach((btn) => {
-  btn.addEventListener("click", function () {
-    const proceed = confirm("Proceed for booking?");
-    if (proceed) {
-      // Inside your "View details" button click handler in flight.js:
-      sessionStorage.setItem("bookingAdults", adults);
-      sessionStorage.setItem("bookingChildren", children);
-      sessionStorage.setItem("bookingFrom", from);
-      sessionStorage.setItem("bookingTo", to);
-      sessionStorage.setItem("bookingJourneyType", journeyType);
-      sessionStorage.setItem("bookingDeparture", departure);
-      sessionStorage.setItem("bookingReturn", returnDate || "");
-      window.location.href = "flightbooking.html";
-    }
-  });
-});
