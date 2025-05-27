@@ -53,33 +53,36 @@ window.addEventListener("DOMContentLoaded", function () {
   }`;
 
   // Generate traveler cards
+  // ...existing code above...
   let cardsHtml = "";
-  for (let i = 1; i <= adults; i++) {
+  let travelerIndex = 0;
+  for (let i = 1; i <= adults; i++, travelerIndex++) {
     cardsHtml += `
-      <div class="card">
-        <div class="card-title">👤 Adult ${i}</div>
-        <button style="background:#fff;border:1px solid #0071c2;color:#0071c2;padding:8px 18px;border-radius:5px;font-weight:500;cursor:pointer;margin-bottom:14px;">Add this traveler's details</button>
-        <ul class="bag-list">
-          <li>1 personal item<br><span style="color:#007a1c;">Included</span><br><span style="font-size:0.95em;">Fits under the seat in front of you</span></li>
-          <li style="margin-top:10px;">1 carry-on bag<br><span style="color:#007a1c;">Included</span><br><span style="font-size:0.95em;">25 x 35 x 55 cm · 7 kg</span></li>
-          <li style="margin-top:10px;">1 checked bag<br><span style="color:#007a1c;">Included</span><br><span style="font-size:0.95em;">15 kg</span></li>
-        </ul>
-      </div>
-    `;
+    <div class="card" data-traveler-index="${travelerIndex}">
+      <div class="card-title">👤 Adult ${i}</div>
+      <button type="button" class="btn-edit-traveler" data-traveler-index="${travelerIndex}" style="background:#fff;border:1px solid #0071c2;color:#0071c2;padding:8px 18px;border-radius:5px;font-weight:500;cursor:pointer;margin-bottom:14px;">Add this traveler's details</button>
+      <ul class="bag-list">
+        <li>1 personal item<br><span style="color:#007a1c;">Included</span><br><span style="font-size:0.95em;">Fits under the seat in front of you</span></li>
+        <li style="margin-top:10px;">1 carry-on bag<br><span style="color:#007a1c;">Included</span><br><span style="font-size:0.95em;">25 x 35 x 55 cm · 7 kg</span></li>
+        <li style="margin-top:10px;">1 checked bag<br><span style="color:#007a1c;">Included</span><br><span style="font-size:0.95em;">15 kg</span></li>
+      </ul>
+    </div>
+  `;
   }
-  for (let i = 1; i <= children; i++) {
+  for (let i = 1; i <= children; i++, travelerIndex++) {
     cardsHtml += `
-      <div class="card">
-        <div class="card-title">🧒 Child ${i}</div>
-        <button style="background:#fff;border:1px solid #0071c2;color:#0071c2;padding:8px 18px;border-radius:5px;font-weight:500;cursor:pointer;margin-bottom:14px;">Add this traveler's details</button>
-        <ul class="bag-list">
-          <li>1 personal item<br><span style="color:#007a1c;">Included</span><br><span style="font-size:0.95em;">Fits under the seat in front of you</span></li>
-          <li style="margin-top:10px;">1 carry-on bag<br><span style="color:#007a1c;">Included</span><br><span style="font-size:0.95em;">25 x 35 x 55 cm · 7 kg</span></li>
-          <li style="margin-top:10px;">1 checked bag<br><span style="color:#007a1c;">Included</span><br><span style="font-size:0.95em;">15 kg</span></li>
-        </ul>
-      </div>
-    `;
+    <div class="card" data-traveler-index="${travelerIndex}">
+      <div class="card-title">🧒 Child ${i}</div>
+      <button type="button" class="btn-edit-traveler" data-traveler-index="${travelerIndex}" style="background:#fff;border:1px solid #0071c2;color:#0071c2;padding:8px 18px;border-radius:5px;font-weight:500;cursor:pointer;margin-bottom:14px;">Add this traveler's details</button>
+      <ul class="bag-list">
+        <li>1 personal item<br><span style="color:#007a1c;">Included</span><br><span style="font-size:0.95em;">Fits under the seat in front of you</span></li>
+        <li style="margin-top:10px;">1 carry-on bag<br><span style="color:#007a1c;">Included</span><br><span style="font-size:0.95em;">25 x 35 x 55 cm · 7 kg</span></li>
+        <li style="margin-top:10px;">1 checked bag<br><span style="color:#007a1c;">Included</span><br><span style="font-size:0.95em;">15 kg</span></li>
+      </ul>
+    </div>
+  `;
   }
+  // ...existing code below...
   document.querySelector(".traveler-cards").innerHTML = cardsHtml;
 
   // Update price details (example static price, you can make dynamic)
@@ -94,6 +97,14 @@ window.addEventListener("DOMContentLoaded", function () {
     "INR" + fare.toLocaleString(undefined, { minimumFractionDigits: 2 });
   document.getElementById("traveler-count").textContent = travelerCount;
   // Open modal on "Add this traveler's details" click
+  let currentTravelerIndex = null;
+  document.body.addEventListener("click", function (e) {
+    if (e.target && e.target.classList.contains("btn-edit-traveler")) {
+      currentTravelerIndex = e.target.getAttribute("data-traveler-index");
+      document.getElementById("traveler-modal").style.display = "flex";
+    }
+  });
+
   document.body.addEventListener("click", function (e) {
     if (e.target && e.target.matches("button, .btn, .btn-details")) {
       if (e.target.textContent.includes("Add this traveler's details")) {
@@ -113,4 +124,40 @@ window.addEventListener("DOMContentLoaded", function () {
     if (e.key === "Escape")
       document.getElementById("traveler-modal").style.display = "none";
   });
+  if (e.target && e.target.id === "done-btn") {
+    // Get form values
+    const form = document.getElementById("traveler-form");
+    const firstName = form
+      .querySelector('input[placeholder="Enter first name(s)"]')
+      .value.trim();
+    const lastName = form
+      .querySelector('input[placeholder="Enter last name(s)"]')
+      .value.trim();
+    const gender = form.querySelector("select").value;
+    if (!firstName || !lastName || !gender) {
+      alert("Please fill all required fields.");
+      return;
+    }
+    // Update card
+    const card = document.querySelector(
+      `.card[data-traveler-index="${currentTravelerIndex}"]`
+    );
+    card.innerHTML = `
+    <div class="card-title" style="display:flex;align-items:center;gap:8px;">
+      <span>👤</span>
+      <span style="font-weight:600;">${firstName} ${lastName}</span>
+      <span style="color:#007a1c;font-size:1.3em;margin-left:auto;">&#10003;</span>
+    </div>
+    <div style="margin-bottom:8px;">${
+      gender.charAt(0).toUpperCase() + gender.slice(1)
+    }</div>
+    <button type="button" class="btn-edit-traveler" data-traveler-index="${currentTravelerIndex}" style="background:#fff;border:1px solid #0071c2;color:#0071c2;padding:8px 18px;border-radius:5px;font-weight:500;cursor:pointer;margin-bottom:14px;">Edit this traveler's details</button>
+    <ul class="bag-list">
+      <li>1 personal item<br><span style="color:#007a1c;">Included</span><br><span style="font-size:0.95em;">Fits under the seat in front of you</span></li>
+      <li style="margin-top:10px;">1 carry-on bag<br><span style="color:#007a1c;">Included</span><br><span style="font-size:0.95em;">25 x 35 x 55 cm · 7 kg</span></li>
+      <li style="margin-top:10px;">1 checked bag<br><span style="color:#007a1c;">Included</span><br><span style="font-size:0.95em;">15 kg</span></li>
+    </ul>
+  `;
+    document.getElementById("traveler-modal").style.display = "none";
+  }
 });
